@@ -1,0 +1,167 @@
+##############################################
+#               Ultra Chat                   #
+##############################################
+#Color GUI Settings:
+#If true the command will be /chat color instead of /color
+ChatColor_Command: false
+
+#Used for assistance in development. Read more about it here:
+# https://bstats.org/getting-started
+bstats: true
+#Restrict plugins from changing things in the config.
+apirestrict: false
+#Some of the chat formats break the mute function in plugins.
+#This plugin hooks into ban/mute plugins and allow it to work.
+#If set to true then the plugin will hook into that plugin.
+#Suggest more ban plugins here: https://github.com/ryandw11/Ultra-Chat/issues !
+#Or ask the ban plugin author.
+pluginhooks:
+    Essentials: true
+    AdvancedBan: true
+#Join / Leave messages:
+Join_Message: '&e %player% has joined the server!'
+Leave_Message: '&e %player% has left the server!'
+
+#############################################
+#               Anti - Swear                #
+#############################################
+
+Anti_Swear_Enabled: false
+
+Blocked_Words:
+    - fuck
+    - fu
+    - shit
+    - f*ck
+    - crap
+    - ass
+    - jackass
+    - sh*t
+    - asshole
+    - fucker
+##############################################
+#            Chat Format Type                #
+##############################################
+# Vailed types: normal, channel, channel_json, json, range.
+# Set to nothing to not format the chat.
+# Check the wiki for an explenation of each type!
+chat_format: 'normal'
+
+#The default color that opped players chat in. Do &r for none.
+Op_Chat_Color: '&c'
+##############################################
+#                Channels                    #
+##############################################
+#Note: Custom Chat must be enabled for this to work!
+#Edit the channels.yml when the server is stopped!
+#Default Channel. This is the channel the player first joins the server. It is also given when the channel the player is on does not exsist.
+Default_Channel: 'global'
+#This is a list for the channels. It will only affect the list of channels. (Name should match the same as the one in the channels.yml)
+Channel_List:
+- global
+- vip
+
+##############################################
+#                   Range                    #
+##############################################
+#If json should be enabled on the range chat or not.
+Range_Json: false
+#The global channel which everyone can see.
+Global:
+    format: '&6[Global]&r %prefix% %player% %suffix% &7>>'
+    json:
+      - Example
+      - Text
+World:
+    format: '&d[World]&r %prefix% %player% %suffix% &7>>'
+    json:
+      - Example
+      - Text
+Local:
+    format: '&b[Local]&r %prefix% %player% %suffix% &7>>'
+    json:
+      - Example
+      - Text
+    range: 100
+##############################################
+#                    Chat                    #
+#                 Json / Normal              #
+##############################################
+
+#Console Chat Log: (JSON chat only!)
+#With json on the chat no longer prints to the console. This option fixes that issue! Set to true if you want it enabled!
+console_log: false
+
+
+#New player join. If the player hasn't joined the server before then this message will play. If you don't want it put none.
+New_Player: '&d%player% has just joined the server for the first time! Welcome!'
+
+#Moto of the day. You can use chat colors.
+#If you have PlaceholderAPI installed you can use these placeholders: https://www.spigotmc.org/wiki/placeholderapi-placeholders/!
+Motd_Enabled: true
+Motd:
+    - '&6Welcome to the server,&r %player_name%&6.'
+    - '&6There are currently&b %server_online% &6players online!'
+
+#Variables: %prefix% - Gives you the players prefix. %suffix% - gives you the player suffix!
+#You can use PlaceHolderAPI here! Check out the placeholders here: https://www.spigotmc.org/wiki/placeholderapi-placeholders/
+#You can have unlimited custom chat formats.
+#Note: If PlaceHolderAPI placeholders are not showing up please check to make sure you have the extension installed and that you reloaded the plugin. 
+#Notice: The JSON is only if the JSON above is set to true. JSON can also use PlaceHolderAPI!
+########################
+#   Important Note!    #
+########################
+# If you give a player the '*' permission they will have every single custom chat. 
+# When json is enabled the message is sent several times based on the number of custom formats you have!
+# To advoid this give them the permission -(yourpermission). Ex: -ultrachat.chat.1
+Custom_Chat:
+    #The Chat_Count number must represent how many custom chats you have.
+    Chat_Count: 5
+    #Each new custom chat must be a single number and all of them must go 1 - (what ever number you have last). There can't be any numbers skipped.
+    1:
+        #The permission node you want to give it. *Does not need to match up with the number above*
+        Permission: 'ultrachat.chat.1'
+        #The custom format in the chat. The message is added after the end of the string.
+        Format: '%prefix% %player% %suffix%&7>> '
+        #JSON formating if enabled. In order to use color codes surround the message in single quotes. ''
+        JSON:
+            - Example
+            - Example 2
+        #You can now also suggest a command to a player who clicks it. %player% is the only valid placeholder.
+    2:
+        Permission: 'ultrachat.chat.2'
+        Format: '%prefix% %player% %suffix% &7>> '
+        JSON:
+            - Example
+            - Example 2
+    3:
+        Permission: 'ultrachat.chat.3'
+        Format: '%prefix% %player% %suffix%&7>> '
+        JSON:
+            - '&cNotice'
+            - '&7Use colorcodes in quotes'
+    4:
+        Permission: 'ultrachat.chat.4'
+        Format: '%prefix% %player% %suffix%&7>> '
+        JSON:
+            - '45'
+            - Same with numbers
+    5:
+        Permission: 'ultrachat.chat.5'
+        Format: '%prefix% %player% %suffix%&7>> '
+        JSON:
+            - Example
+            - Example 2
+    #For any player opped.
+    Op_Chat: 
+        #The format.
+        Format: '%prefix% %player% %suffix%&c>> '
+        JSON:
+            - Example
+            - Example 2
+    #The default chat when a player does not have a custom one.
+    Default_Chat: 
+        Format: '<%prefix% %player% %suffix%&f>'
+        JSON:
+            - Example
+            - Example 2
