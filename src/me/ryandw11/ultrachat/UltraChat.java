@@ -21,10 +21,13 @@ import me.ryandw11.ultrachat.formatting.Chat_Json;
 import me.ryandw11.ultrachat.formatting.Normal;
 import me.ryandw11.ultrachat.formatting.Range;
 import me.ryandw11.ultrachat.gui.ColorGUI;
+import me.ryandw11.ultrachat.gui.ColorGUI_Latest;
+import me.ryandw11.ultrachat.gui.ColorGUI_Outdated;
 import me.ryandw11.ultrachat.listner.ConsoleLogChat;
 import me.ryandw11.ultrachat.listner.JoinListner;
 import me.ryandw11.ultrachat.listner.NoSwear;
 import me.ryandw11.ultrachat.listner.Notify;
+import me.ryandw11.ultrachat.listner.Notify_1_12;
 import me.ryandw11.ultrachat.listner.Spy;
 import me.ryandw11.ultrachat.listner.StopChat;
 import me.ryandw11.ultrachat.pluginhooks.AdvancedBanMute;
@@ -68,6 +71,8 @@ public class UltraChat extends JavaPlugin{
 	public String prefix;
 	public static YamlConfiguration LANG;
 	public static File LANG_FILE;
+	
+	private ColorGUI colorGUI;
 
 	
 
@@ -352,19 +357,46 @@ public class UltraChat extends JavaPlugin{
 		getCommand("sc").setExecutor(new StaffChat());
 		getCommand("sctoggle").setExecutor(new StaffChatToggle());
 		getCommand("spy").setExecutor(new SpyCommand());
-		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
-			getCommand("color").setExecutor(new ColorGUI());
 		getCommand("channel").setExecutor(new ChannelCmd());
 		Bukkit.getServer().getPluginManager().registerEvents(new StopChat(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new NoSwear(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Spy(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new JoinListner(), this);
 		//Bukkit.getServer().getPluginManager().registerEvents(new Format(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
 		if(getConfig().getBoolean("console_log"))
 			Bukkit.getServer().getPluginManager().registerEvents(new ConsoleLogChat(), this);
-		
+		loadVersions();
+	}
+	
+	private void loadVersions() {
+		String version;
+
+        try {
+
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+
+        } catch (ArrayIndexOutOfBoundsException w0w) {
+        	version = " ";
+        }
+        if (version.equals("v1_13_R2")) {
+            
+            Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
+            colorGUI = new ColorGUI_Latest();
+            Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Latest(), this);
+    		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
+    			getCommand("color").setExecutor(new ColorGUI_Latest());
+        }else {
+        	Bukkit.getServer().getPluginManager().registerEvents(new Notify_1_12(), this);
+        	colorGUI = new ColorGUI_Outdated();
+        	Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Outdated(), this);
+    		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
+    			getCommand("color").setExecutor(new ColorGUI_Outdated());
+    		getLogger().info("1.12 or below version detected. Activating compatibility mode.");
+        }
+	}
+	
+	public ColorGUI getColorGUI() {
+		return colorGUI;
 	}
 	
 

@@ -3,7 +3,7 @@ package me.ryandw11.ultrachat.commands;
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Lang;
 import me.ryandw11.ultrachat.api.UltraChatAPI;
-import me.ryandw11.ultrachat.gui.ColorGUI;
+import me.ryandw11.ultrachat.gui.ColorGUI_Latest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -251,7 +251,7 @@ public class ChatCommand implements CommandExecutor {
 				}
 				else if(args.length == 1 && args[0].equalsIgnoreCase("color")){
 					if(p.hasPermission("ultrachat.color")){
-						ColorGUI.openGUI(p.getPlayer());
+						plugin.getColorGUI().openGUI(p.getPlayer());
 					}
 					else{
 						p.sendMessage(Lang.NO_PERM.toString());
