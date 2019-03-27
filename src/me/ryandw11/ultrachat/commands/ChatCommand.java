@@ -38,7 +38,7 @@ public class ChatCommand implements CommandExecutor {
 				p.sendMessage(ChatColor.BLUE + "=============={" + ChatColor.GREEN + "Ultra Chat" + ChatColor.BLUE + "}==============");
 				p.sendMessage(ChatColor.BLUE + "Plugin developed by:" + ChatColor.GREEN + " Ryandw11");
 				p.sendMessage(ChatColor.BLUE + "Version: " + ChatColor.GREEN + String.format("%s", plugin.getDescription().getVersion()));
-				p.sendMessage(ChatColor.BLUE + "Plugin wiki:" + ChatColor.GREEN + " https://github.com/ryandw11/Ultra-Chat/wiki");
+				p.sendMessage(ChatColor.BLUE + "Plugin wiki:" + ChatColor.GREEN + " https://github.com/ryandw11/UltraChat/wiki");
 				p.sendMessage(ChatColor.BLUE + "Do " + ChatColor.GREEN + " /chat help " + ChatColor.BLUE + "for the list of commands!");
 				p.sendMessage(ChatColor.BLUE + "=============={" + ChatColor.GREEN + "Ultra Chat" + ChatColor.BLUE + "}==============");
 				
