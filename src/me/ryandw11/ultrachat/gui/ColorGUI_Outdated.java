@@ -199,6 +199,7 @@ public class ColorGUI_Outdated implements CommandExecutor, Listener, ColorGUI{
 		}
 		//================
 		ItemStack item = e.getCurrentItem();
+		@SuppressWarnings("deprecation")
 		int data = item.getDurability();
 		
 		if(item.getType() == Material.LAPIS_BLOCK){

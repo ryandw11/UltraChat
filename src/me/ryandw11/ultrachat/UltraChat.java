@@ -45,10 +45,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main Class
  * @author Ryandw11
- * @version 2.2
+ * @version 2.3
  * Updated for 1.13.
- * (Finally updated the yamlconfig)
- * 
+ * (Very few API methods here)
  */
 public class UltraChat extends JavaPlugin{
 	
@@ -86,12 +85,12 @@ public class UltraChat extends JavaPlugin{
 		plugin = this;
 		 if (getServer().getPluginManager().getPlugin("Vault") == null && !setupChat()) {
 			 	getLogger().info(String.format("[%s] - Vault is not found!", getDescription().getName()));
-				getLogger().severe("§cWarning: You do not have Vault installed! This plugin has been disabled!");
+				getLogger().severe("§cWarning: You do not have Vault installed! This plugin is now disabled!");
 				Bukkit.getPluginManager().disablePlugin(this);
 				return;
 	        }
 		 if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-			 getLogger().severe("§cWarning: You do not have PlaceholderAPI installed! This plugin has been disabled!");
+			 getLogger().severe("§cWarning: You do not have PlaceholderAPI installed! This plugin is now disabled!");
 	          Bukkit.getPluginManager().disablePlugin(this);
 	          return;
 		 }
@@ -130,6 +129,7 @@ public class UltraChat extends JavaPlugin{
 		saveFile();
 		saveChannel();
 	}
+	
 	/**
 	 * Setup the chat formatting.
 	 */
@@ -182,34 +182,6 @@ public class UltraChat extends JavaPlugin{
 			md = ChatMode.NONE;
 			break;
 		}
-		
-//		channelEnabled = getConfig().getBoolean("Channels");
-//		if(channelEnabled){
-//			if(legitDefaultChannel(getConfig().getString("Default_Channel"))){
-//				defaultChannel = getConfig().getString("Default_Channel");
-//			}
-//			else{
-//				channelEnabled = false;
-//			}
-//
-//		}
-//		if(getConfig().getBoolean("JSON")){
-//			JSON = true;
-//		}
-//		else{
-//			JSON = false;
-//		}
-//		if(!getConfig().getBoolean("Custom_Chat_Enabled")){
-//			getLogger().info("Custom chat is not enabled. The chat will not be modified!");
-//		}
-//		if(JSON){
-//			Bukkit.getServer().getPluginManager().registerEvents(new Chat_Json(), this);
-//			
-//		}else if(channelEnabled){
-//			Bukkit.getServer().getPluginManager().registerEvents(new Channels(), this);
-//		}else{
-//			Bukkit.getServer().getPluginManager().registerEvents(new Normal(), this);
-//		}
 	}
 	
 	//Vault set-up =========================================================
@@ -292,9 +264,18 @@ public class UltraChat extends JavaPlugin{
 				e.printStackTrace();
 			}
 	}
+	/**
+	 * Get the language file.
+	 * @return The language file.
+	 */
 	public File getLangFile() {
 	    return LANG_FILE;
 	}
+	
+	/**
+	 *	
+	 * @return
+	 */
 	public YamlConfiguration getLang() {
 	    return LANG;
 	}
@@ -368,6 +349,9 @@ public class UltraChat extends JavaPlugin{
 		loadVersions();
 	}
 	
+	/**
+	 * Loads classes based upon the server version.
+	 */
 	private void loadVersions() {
 		String version;
 
@@ -395,6 +379,10 @@ public class UltraChat extends JavaPlugin{
         }
 	}
 	
+	/**
+	 * Get the ColorGUI class for the right version.
+	 * @return A class that implements ColorGUI
+	 */
 	public ColorGUI getColorGUI() {
 		return colorGUI;
 	}

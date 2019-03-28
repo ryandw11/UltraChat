@@ -3,7 +3,6 @@ package me.ryandw11.ultrachat.commands;
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Lang;
 import me.ryandw11.ultrachat.api.UltraChatAPI;
-import me.ryandw11.ultrachat.gui.ColorGUI_Latest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -51,12 +50,12 @@ public class ChatCommand implements CommandExecutor {
 					
 					if(plugin.chatStop == true){
 						plugin.chatStop = false;
-						p.sendMessage(ChatColor.GREEN + "Chat Unstopped");
+						p.sendMessage(Lang.CHAT_UNSTOP_PERSONAL.toString());
 						Bukkit.getServer().broadcastMessage(Lang.CHAT_STOP_OFF.toString().replace("%p", p.getDisplayName()));
 					}
 					else if(plugin.chatStop == false){
 						plugin.chatStop = true;
-						p.sendMessage(ChatColor.GREEN + "Chat Stopped");
+						p.sendMessage(Lang.CHAT_STOP_PERSONAL.toString());
 						Bukkit.getServer().broadcastMessage(Lang.CHAT_STOP_ON.toString().replace("%p", p.getDisplayName()));
 					}
 					else{
@@ -119,14 +118,14 @@ public class ChatCommand implements CommandExecutor {
 				else if(args.length == 1 && args[0].equalsIgnoreCase("sjoin")){
 					if(p.hasPermission("ultrachat.sjoin")){
 						if(plugin.data.getBoolean(p.getUniqueId().toString() + ".sjoin")){
-							p.sendMessage(ChatColor.AQUA + "Your Join/Leave message will now be shown!");
+							p.sendMessage(Lang.SJOIN_SHOWN.toString());
 							plugin.data.set(p.getUniqueId().toString() + ".sjoin", false);
 							plugin.saveFile();
 						}
 						else{
 							plugin.data.set(p.getUniqueId().toString() + ".sjoin", true);
 							plugin.saveFile();
-							p.sendMessage(ChatColor.AQUA + "Your Join/Leave message will no longer be shown!"); 
+							p.sendMessage(Lang.SJOIN_HIDE.toString()); 
 						}
 					}
 					else{
@@ -139,14 +138,14 @@ public class ChatCommand implements CommandExecutor {
 						Player pl = (Player) Bukkit.getServer().getPlayer(args[1]);
 						if(pl == null){p.sendMessage(ChatColor.RED + "Player can not be null!"); return true;}
 						if(plugin.data.getBoolean(p.getUniqueId().toString() + ".sjoin")){
-							p.sendMessage(ChatColor.AQUA + pl.getName() + " Join/Leave message will now be shown!");
+							p.sendMessage(String.format(Lang.SJOIN_OTHER_SHOW.toString(), pl.getName()));
 							plugin.data.set(p.getUniqueId().toString() + ".sjoin", false);
 							plugin.saveFile();
 						}
 						else{
 							plugin.data.set(p.getUniqueId().toString() + ".sjoin", true);
 							plugin.saveFile();
-							p.sendMessage(ChatColor.AQUA + pl.getName() + " Join/Leave message will no longer be shown!"); 
+							p.sendMessage(String.format(Lang.SJOIN_OTHER_HIDE.toString(), pl.getName())); 
 						}
 					}
 					else{
@@ -214,7 +213,7 @@ public class ChatCommand implements CommandExecutor {
 							p.sendMessage(ChatColor.BLUE + "---------------------------------------------------");
 						}
 						if(!(args[1].equals("1") || args[1].equals("2"))){
-							p.sendMessage(ChatColor.RED + "There are only two help pages!");
+							p.sendMessage(Lang.HELP_PAGE_ERROR.toString());
 						}
 					}
 					else{
