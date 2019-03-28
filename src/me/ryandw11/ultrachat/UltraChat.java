@@ -21,10 +21,13 @@ import me.ryandw11.ultrachat.formatting.Chat_Json;
 import me.ryandw11.ultrachat.formatting.Normal;
 import me.ryandw11.ultrachat.formatting.Range;
 import me.ryandw11.ultrachat.gui.ColorGUI;
+import me.ryandw11.ultrachat.gui.ColorGUI_Latest;
+import me.ryandw11.ultrachat.gui.ColorGUI_Outdated;
 import me.ryandw11.ultrachat.listner.ConsoleLogChat;
 import me.ryandw11.ultrachat.listner.JoinListner;
 import me.ryandw11.ultrachat.listner.NoSwear;
 import me.ryandw11.ultrachat.listner.Notify;
+import me.ryandw11.ultrachat.listner.Notify_1_12;
 import me.ryandw11.ultrachat.listner.Spy;
 import me.ryandw11.ultrachat.listner.StopChat;
 import me.ryandw11.ultrachat.pluginhooks.AdvancedBanMute;
@@ -42,10 +45,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main Class
  * @author Ryandw11
- * @version 2.2
+ * @version 2.3
  * Updated for 1.13.
- * (Finally updated the yamlconfig)
- * 
+ * (Very few API methods here)
  */
 public class UltraChat extends JavaPlugin{
 	
@@ -68,6 +70,8 @@ public class UltraChat extends JavaPlugin{
 	public String prefix;
 	public static YamlConfiguration LANG;
 	public static File LANG_FILE;
+	
+	private ColorGUI colorGUI;
 
 	
 
@@ -81,12 +85,12 @@ public class UltraChat extends JavaPlugin{
 		plugin = this;
 		 if (getServer().getPluginManager().getPlugin("Vault") == null && !setupChat()) {
 			 	getLogger().info(String.format("[%s] - Vault is not found!", getDescription().getName()));
-				getLogger().severe("§cWarning: You do not have Vault installed! This plugin has been disabled!");
+				getLogger().severe("§cWarning: You do not have Vault installed! This plugin is now disabled!");
 				Bukkit.getPluginManager().disablePlugin(this);
 				return;
 	        }
 		 if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-			 getLogger().severe("§cWarning: You do not have PlaceholderAPI installed! This plugin has been disabled!");
+			 getLogger().severe("§cWarning: You do not have PlaceholderAPI installed! This plugin is now disabled!");
 	          Bukkit.getPluginManager().disablePlugin(this);
 	          return;
 		 }
@@ -125,6 +129,7 @@ public class UltraChat extends JavaPlugin{
 		saveFile();
 		saveChannel();
 	}
+	
 	/**
 	 * Setup the chat formatting.
 	 */
@@ -177,34 +182,6 @@ public class UltraChat extends JavaPlugin{
 			md = ChatMode.NONE;
 			break;
 		}
-		
-//		channelEnabled = getConfig().getBoolean("Channels");
-//		if(channelEnabled){
-//			if(legitDefaultChannel(getConfig().getString("Default_Channel"))){
-//				defaultChannel = getConfig().getString("Default_Channel");
-//			}
-//			else{
-//				channelEnabled = false;
-//			}
-//
-//		}
-//		if(getConfig().getBoolean("JSON")){
-//			JSON = true;
-//		}
-//		else{
-//			JSON = false;
-//		}
-//		if(!getConfig().getBoolean("Custom_Chat_Enabled")){
-//			getLogger().info("Custom chat is not enabled. The chat will not be modified!");
-//		}
-//		if(JSON){
-//			Bukkit.getServer().getPluginManager().registerEvents(new Chat_Json(), this);
-//			
-//		}else if(channelEnabled){
-//			Bukkit.getServer().getPluginManager().registerEvents(new Channels(), this);
-//		}else{
-//			Bukkit.getServer().getPluginManager().registerEvents(new Normal(), this);
-//		}
 	}
 	
 	//Vault set-up =========================================================
@@ -287,9 +264,18 @@ public class UltraChat extends JavaPlugin{
 				e.printStackTrace();
 			}
 	}
+	/**
+	 * Get the language file.
+	 * @return The language file.
+	 */
 	public File getLangFile() {
 	    return LANG_FILE;
 	}
+	
+	/**
+	 *	
+	 * @return
+	 */
 	public YamlConfiguration getLang() {
 	    return LANG;
 	}
@@ -352,19 +338,53 @@ public class UltraChat extends JavaPlugin{
 		getCommand("sc").setExecutor(new StaffChat());
 		getCommand("sctoggle").setExecutor(new StaffChatToggle());
 		getCommand("spy").setExecutor(new SpyCommand());
-		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
-			getCommand("color").setExecutor(new ColorGUI());
 		getCommand("channel").setExecutor(new ChannelCmd());
 		Bukkit.getServer().getPluginManager().registerEvents(new StopChat(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new NoSwear(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new Spy(), this);
 		Bukkit.getServer().getPluginManager().registerEvents(new JoinListner(), this);
 		//Bukkit.getServer().getPluginManager().registerEvents(new Format(this), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI(), this);
-		Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
 		if(getConfig().getBoolean("console_log"))
 			Bukkit.getServer().getPluginManager().registerEvents(new ConsoleLogChat(), this);
-		
+		loadVersions();
+	}
+	
+	/**
+	 * Loads classes based upon the server version.
+	 */
+	private void loadVersions() {
+		String version;
+
+        try {
+
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+
+        } catch (ArrayIndexOutOfBoundsException w0w) {
+        	version = " ";
+        }
+        if (version.equals("v1_13_R2")) {
+            
+            Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
+            colorGUI = new ColorGUI_Latest();
+            Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Latest(), this);
+    		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
+    			getCommand("color").setExecutor(new ColorGUI_Latest());
+        }else {
+        	Bukkit.getServer().getPluginManager().registerEvents(new Notify_1_12(), this);
+        	colorGUI = new ColorGUI_Outdated();
+        	Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Outdated(), this);
+    		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
+    			getCommand("color").setExecutor(new ColorGUI_Outdated());
+    		getLogger().info("1.12 or below version detected. Activating compatibility mode.");
+        }
+	}
+	
+	/**
+	 * Get the ColorGUI class for the right version.
+	 * @return A class that implements ColorGUI
+	 */
+	public ColorGUI getColorGUI() {
+		return colorGUI;
 	}
 	
 

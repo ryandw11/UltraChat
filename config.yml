@@ -13,7 +13,7 @@ apirestrict: false
 #Some of the chat formats break the mute function in plugins.
 #This plugin hooks into ban/mute plugins and allow it to work.
 #If set to true then the plugin will hook into that plugin.
-#Suggest more ban plugins here: https://github.com/ryandw11/Ultra-Chat/issues !
+#Suggest more ban plugins here: https://github.com/ryandw11/UltraChat/issues !
 #Or ask the ban plugin author.
 pluginhooks:
     Essentials: true

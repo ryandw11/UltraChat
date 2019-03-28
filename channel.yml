@@ -18,8 +18,8 @@ global:
     format: '%prefix% %player% %suffix%&7>> '
     #This is the JSON format:
     JSON:
-        - 'Wow'
-        - 'No Way!'
+        - '&3Money: $&b%vault_eco_balance_fixed%'
+        - '&3Username: &f%player_name%'
 #Example Channel:
 vip:
     prefix: '&a[&6VIP&a]&r'

@@ -32,7 +32,14 @@ public enum Lang {
 	MENTION("mention", "&aSomeone has mentioned you!"),
 	CMD_SPY_FORMAT("cmd-spy-format", "&3[&6CommandSpy&3]&b %p: &3%s"),
 	STOP_CHAT_MESSAGE("stop-chat-message", "&cThe chat is currently not active."),
-	CONSOLE_CHAT_LOG("console-chat-log", "%p: %s");
+	CONSOLE_CHAT_LOG("console-chat-log", "%p: %s"),
+	CHAT_UNSTOP_PERSONAL("chat-unstop-personal", "&2Chat Unstopped"),
+	CHAT_STOP_PERSONAL("chat-stop-personal", "&2Chat Stopped"),
+	SJOIN_SHOWN("sjoin-shown", "&bYour Join/Leave message will now be shown!"),
+	SJOIN_HIDE("sjoin-hide", "&bYour Join/Leave message will no longer be shown!"),
+	SJOIN_OTHER_SHOW("sjoin-other-show", "&b%p Join/Leave message will now be shown!"),
+	SJOIN_OTHER_HIDE("sjoin-other-hide", "&b%p Join/Leave message will no longer be shown!"),
+	HELP_PAGE_ERROR("help-page-error", "&cThere are only two help pages!");
 
 	
 	 private String path;
