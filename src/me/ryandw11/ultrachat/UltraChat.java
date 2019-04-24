@@ -21,6 +21,7 @@ import me.ryandw11.ultrachat.formatting.Chat_Json;
 import me.ryandw11.ultrachat.formatting.Normal;
 import me.ryandw11.ultrachat.formatting.Range;
 import me.ryandw11.ultrachat.gui.ColorGUI;
+import me.ryandw11.ultrachat.gui.ColorGUI_1_13_R2;
 import me.ryandw11.ultrachat.gui.ColorGUI_Latest;
 import me.ryandw11.ultrachat.gui.ColorGUI_Outdated;
 import me.ryandw11.ultrachat.listner.ConsoleLogChat;
@@ -45,8 +46,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main Class
  * @author Ryandw11
- * @version 2.3
- * Updated for 1.13.
+ * @version 2.3.1-Pre1
+ * Updated for 1.14.
  * (Very few API methods here)
  */
 public class UltraChat extends JavaPlugin{
@@ -362,13 +363,20 @@ public class UltraChat extends JavaPlugin{
         } catch (ArrayIndexOutOfBoundsException w0w) {
         	version = " ";
         }
-        if (version.equals("v1_13_R2")) {
+        if (version.equals("v1_13_R2") || version.equals("v1_14_R1")) {
             
             Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
-            colorGUI = new ColorGUI_Latest();
-            Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Latest(), this);
-    		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
-    			getCommand("color").setExecutor(new ColorGUI_Latest());
+    		if(version.equals("v1_13_R2")) {
+    			colorGUI = new ColorGUI_1_13_R2();
+                Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_1_13_R2(), this);
+        		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
+        			getCommand("color").setExecutor(new ColorGUI_1_13_R2());
+    		}else {
+    			colorGUI = new ColorGUI_Latest();
+                Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Latest(), this);
+        		if(!(plugin.getConfig().getBoolean("ChatColor_Command")))
+        			getCommand("color").setExecutor(new ColorGUI_Latest());
+    		}
         }else {
         	Bukkit.getServer().getPluginManager().registerEvents(new Notify_1_12(), this);
         	colorGUI = new ColorGUI_Outdated();

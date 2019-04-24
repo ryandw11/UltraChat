@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -20,18 +19,18 @@ import me.ryandw11.ultrachat.api.Lang;
 
 /**
  * ColorGUI class.
- * Updated for 1.14+
+ * Updated for 1.13.
  * @author Ryandw11
  *
  */
-public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
+public class ColorGUI_1_13_R2 implements CommandExecutor, Listener, ColorGUI{
 	
 	private UltraChat plugin;
-	public ColorGUI_Latest(){
+	public ColorGUI_1_13_R2(){
 		plugin = UltraChat.plugin;
 	}
 	public void openGUI(Player p){
-		Inventory i = Bukkit.createInventory(null, InventoryType.CHEST, Lang.COLOR_GUI.toString());
+		Inventory i = Bukkit.createInventory(null, 9*2, Lang.COLOR_GUI.toString());
 		
 		ItemStack darkblueitem = new ItemStack(Material.BLUE_WOOL);
 		ItemMeta darkbluemeta = darkblueitem.getItemMeta();
@@ -125,15 +124,6 @@ public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
 		whitemeta.setDisplayName("§fWhite Color Chat");
 		whiteitem.setItemMeta(whitemeta);
 		//==========================================================
-		
-		ItemStack holder = new ItemStack(Material.GRAY_STAINED_GLASS_PANE, 1);
-		ItemMeta holderM = holder.getItemMeta();
-		holderM.setDisplayName(" ");
-		holder.setItemMeta(holderM);
-		
-		for(int o = 15; o < 27; o++) {
-			i.setItem(o, holder);
-		}
 
 		
 		i.setItem(0, darkblueitem);
@@ -181,23 +171,17 @@ public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
 	
 	@EventHandler
 	public void onInventoryClickEvent(InventoryClickEvent e){
-		try {
-			if(e.getView() == null || e.getView().getTitle() == null) return;
-			if(!e.getView().getTitle().equalsIgnoreCase(Lang.COLOR_GUI.toString())) return;
-		}catch(IllegalStateException ex) {
-			return;
-		}
+		if(!e.getInventory().getName().equalsIgnoreCase(Lang.COLOR_GUI.toString())) return;
 		
 		Player p = (Player) e.getWhoClicked();
 		e.setCancelled(true);
 		
 		if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || !e.getCurrentItem().hasItemMeta()){
+			p.closeInventory();
 			return;
 		}
 		//================
 		ItemStack item = e.getCurrentItem();
-		
-		if(!e.getInventory().contains(item)) return;
 		
 		switch(item.getType()) {
 		case LAPIS_BLOCK:
@@ -357,8 +341,6 @@ public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
         		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
         	}
             break;
-        case GRAY_STAINED_GLASS_PANE:
-        	break;
 		default:
 			 p.sendMessage(ChatColor.WHITE + "You choose white color chat!");
 	         p.closeInventory();

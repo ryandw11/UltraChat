@@ -18,6 +18,7 @@ public class JsonChatEvent extends Event {
 	 private boolean cancelled;
 
 	 public JsonChatEvent(Player p, String chat, Set<Player> recipients) {
+		 super(true);
 	     player = p;
 	     this.chat = chat;
 	     this.recipients = recipients;
