@@ -10,6 +10,6 @@
 	<classpathentry kind="lib" path="D:/Spigot Development Dependencies/Spigot 1.10/PlaceholderAPI (1).jar"/>
 	<classpathentry kind="lib" path="D:/Spigot Development Dependencies/1.12/AdvancedBan-2.1.4-RELEASE.jar"/>
 	<classpathentry kind="lib" path="D:/Spigot Development Dependencies/1.12/EssentialsX-2.0.1.jar"/>
-	<classpathentry kind="lib" path="D:/Spigot Development Dependencies/Spigot 1.14.0-Pre5/spigot-1.14-pre5.jar"/>
+	<classpathentry kind="lib" path="D:/Spigot Development Dependencies/Spigot 1.13.2/spigot-1.13.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

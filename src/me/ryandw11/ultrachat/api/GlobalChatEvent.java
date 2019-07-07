@@ -16,7 +16,7 @@ public class GlobalChatEvent extends Event {
 	 private boolean cancelled;
 
 	 public GlobalChatEvent(Player p, String chat) {
-		 super(true);
+		 super(false);
 	     player = p;
 	     this.chat = chat;
 	 }

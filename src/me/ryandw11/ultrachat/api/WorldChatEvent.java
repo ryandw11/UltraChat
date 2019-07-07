@@ -6,7 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 /**
- * Event class
+ * Event class - 
+ * Async Event
  * @author Ryandw11
  *
  */

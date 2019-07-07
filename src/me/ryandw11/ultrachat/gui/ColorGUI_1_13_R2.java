@@ -171,7 +171,7 @@ public class ColorGUI_1_13_R2 implements CommandExecutor, Listener, ColorGUI{
 	
 	@EventHandler
 	public void onInventoryClickEvent(InventoryClickEvent e){
-		if(!e.getInventory().getName().equalsIgnoreCase(Lang.COLOR_GUI.toString())) return;
+		if(!e.getInventory().getTitle().equalsIgnoreCase(Lang.COLOR_GUI.toString())) return;
 		
 		Player p = (Player) e.getWhoClicked();
 		e.setCancelled(true);

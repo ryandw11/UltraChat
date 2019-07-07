@@ -1,5 +1,6 @@
 package me.ryandw11.ultrachat.formatting;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -25,6 +26,7 @@ public class PlayerFormatting {
 		world = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("World.format")));
 		local = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Local.format")));
 	}
+	
 	private String prefix;
 	private String suffix;
 	public String color;

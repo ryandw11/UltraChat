@@ -46,7 +46,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main Class
  * @author Ryandw11
- * @version 2.3.1-Pre1
+ * @version 2.3.1
  * Updated for 1.14.
  * (Very few API methods here)
  */
