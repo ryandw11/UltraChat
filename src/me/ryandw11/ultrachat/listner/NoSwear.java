@@ -3,8 +3,8 @@ package me.ryandw11.ultrachat.listner;
 import java.util.List;
 
 import me.ryandw11.ultrachat.UltraChat;
-import me.ryandw11.ultrachat.api.JsonChatEvent;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.events.JsonChatEvent;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

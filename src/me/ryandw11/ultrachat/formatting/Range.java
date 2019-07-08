@@ -14,8 +14,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.JSON;
-import me.ryandw11.ultrachat.api.JsonChatEvent;
 import me.ryandw11.ultrachat.api.UltraChatAPI;
+import me.ryandw11.ultrachat.api.events.JsonChatEvent;
 
 public class Range implements Listener{
 	private UltraChat plugin;
@@ -28,7 +28,7 @@ public class Range implements Listener{
 	public void onChat(AsyncPlayerChatEvent e){
 		Player p = e.getPlayer();
 		PlayerFormatting pf = new PlayerFormatting(p);
-		UltraChatAPI uapi = new UltraChatAPI(plugin);
+		UltraChatAPI uapi = new UltraChatAPI();
 		if(p.hasPermission("ultrachat.chat.color")){
 			e.setMessage(ChatColor.translateAlternateColorCodes('&', e.getMessage()));
 		}

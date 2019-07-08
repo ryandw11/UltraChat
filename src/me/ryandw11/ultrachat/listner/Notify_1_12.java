@@ -7,8 +7,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.ryandw11.ultrachat.UltraChat;
-import me.ryandw11.ultrachat.api.JsonChatEvent;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.events.JsonChatEvent;
 
 /**
  * For 1.12 and below servers.

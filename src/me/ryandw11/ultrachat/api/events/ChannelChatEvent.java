@@ -1,27 +1,33 @@
-package me.ryandw11.ultrachat.api;
+package me.ryandw11.ultrachat.api.events;
 
 import java.util.Set;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+
+import me.ryandw11.ultrachat.api.channels.ChatChannel;
+import me.ryandw11.ultrachat.api.managers.ChannelManager;
 /**
  * Event class - 
  * Async Event
  * @author Ryandw11
+ *
  */
-public class JsonChatEvent extends Event {
+public class ChannelChatEvent extends Event {
 	 private static final HandlerList handlers = new HandlerList();
 	 private Player player;
 	 private String chat;
+	 private ChatChannel channel;
 	 private Set<Player> recipients;
 	 private boolean cancelled;
 
-	 public JsonChatEvent(Player p, String chat, Set<Player> recipients) {
+	 public ChannelChatEvent(Player p, String chat, Set<Player> recipients) {
 		 super(true);
 	     player = p;
 	     this.chat = chat;
 	     this.recipients = recipients;
+	     this.channel = new ChannelManager().getPlayerChannel(p);
 	 }
 	 /**
 	  * Grab the recipients.
@@ -44,6 +50,10 @@ public class JsonChatEvent extends Event {
 
 	 public String getMessage() {
 		 return chat;
+	 }
+	 
+	 public ChatChannel getChannel() {
+		 return channel;
 	 }
 	 
 	 public void setMessage(String message){

@@ -10,10 +10,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
-import me.ryandw11.ultrachat.api.GlobalChatEvent;
 import me.ryandw11.ultrachat.api.JSON;
 import me.ryandw11.ultrachat.api.Lang;
 import me.ryandw11.ultrachat.api.UltraChatAPI;
+import me.ryandw11.ultrachat.api.events.GlobalChatEvent;
 import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 
 public class Global implements CommandExecutor {
@@ -34,7 +34,7 @@ public class Global implements CommandExecutor {
 			p.sendMessage(Lang.NO_PERM.toString());
 			return true;
 		}
-		UltraChatAPI uapi = new UltraChatAPI(plugin);
+		UltraChatAPI uapi = new UltraChatAPI();
 		PlayerFormatting pf = new PlayerFormatting(p);
 		if(!uapi.isRangeJson()){
 			GlobalChatEvent e = new GlobalChatEvent(p, this.getMessage(args, p));

@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.api.channels.ChannelBuilder;
+import me.ryandw11.ultrachat.api.channels.ChatChannel;
 import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 /**
  * UltraChatAPI
@@ -23,60 +25,12 @@ public class UltraChatAPI{
 	 * 
 	 * 
 	 */
-	/**
-	 * Grab the Instance
-	 * @return #getPlugin()
-	 * @deprecated
-	 */
-	public static UltraChat getInstance(){
-		return getPlugin();
+	private UltraChat plugin;
+	public UltraChatAPI(){
+		this.plugin = UltraChat.plugin;
 	}
 	
-	private UltraChat plugin;
-	public UltraChatAPI(UltraChat plugin){
-		this.plugin = plugin;
-	}
-	/**
-	 * Grab the player's current channel.
-	 * @param player
-	 * @return The player's current channel.
-	 */
-	public String getPlayerChannel(Player player){
-		return plugin.data.getString(player.getUniqueId() + ".channel");
-	}
-	/**
-	 * Get the servers default channel.
-	 * @return Default Channel
-	 */
-	public String getDefaultChannel(){
-		return plugin.getConfig().getString("Default_Channel");
-	}
-	/**
-	 * Set the player's channel.
-	 * @param player
-	 * @param channel
-	 */
-	public void setPlayerChannel(Player player, String channel){
-		plugin.data.set(player.getUniqueId() + ".channel", channel);
-		plugin.saveFile();
-	}
-	/**
-	 * Set the default channel
-	 * @param channel
-	 */
-	public void setDefaultChannel(String channel){
-		plugin.getConfig().set("Default_Config", channel);
-		plugin.saveConfig();
-	}
-	/**
-	 * Get a channel's json.
-	 * @param channel
-	 * @return Json array
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getChannelJson(String channel){
-		return (ArrayList<String>) plugin.channel.get(channel + ".JSON");
-	}
+	
 	/**
 	 * Get a format's json.
 	 * @param number
@@ -87,15 +41,6 @@ public class UltraChatAPI{
 		return (ArrayList<String>) plugin.getConfig().get("Custom_Chat." + number + ".JSON");
 	}
 	/**
-	 * Set a channel's json.
-	 * @param json
-	 * @param channel
-	 */
-	public void setChannelJson(ArrayList<String> json, String channel){
-		plugin.channel.set(channel + ".json", json);
-		plugin.saveChannel();
-	}
-	/**
 	 * Set a format's json.
 	 * @param json
 	 * @param number
@@ -104,22 +49,6 @@ public class UltraChatAPI{
 	public void setChatFormatJson(ArrayList<String> json, String number){
 		plugin.getConfig().set("Custom_Chat." + number + ".JSON", json);
 		plugin.saveConfig();
-	}
-	/**
-	 * Check to see if channels are enabled.
-	 * @deprecated Use getMode()
-	 * @return boolean
-	 */
-	public boolean isChannelEnabled(){
-		return plugin.getConfig().getBoolean("Channels");
-	}
-	/**
-	 * Check to see if json is enabled.
-	 * @deprecated Use getMode()
-	 * @return boolean
-	 */
-	public boolean isJsonEnabled(){
-		return plugin.getConfig().getBoolean("JSON");
 	}
 	/**
 	 * Get the current chat mode.
@@ -235,6 +164,7 @@ public class UltraChatAPI{
 	 * @param always_appear
 	 * @param format
 	 * @param json
+	 * @deprecated
 	 */
 	
 	public void createChannel(String channel, String prefix, String permission, boolean always_appear, String format, ArrayList<String> json){
@@ -247,6 +177,7 @@ public class UltraChatAPI{
 	}
 	/**
 	 * Remove a channel.
+	 * @deprecated
 	 * @param channel
 	 */
 	public void removeChannel(String channel){
@@ -254,13 +185,6 @@ public class UltraChatAPI{
 		plugin.saveChannel();
 	}
 	
-	/**
-	 * Grab the plugin.
-	 * @return plugin. Don't worry about the return
-	 */
-	public static UltraChat getPlugin(){
-		return UltraChat.plugin;
-	}
 	/**
 	 * Get the current formatting type.
 	 * @return The value of the config.

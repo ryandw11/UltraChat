@@ -6,8 +6,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
-import me.ryandw11.ultrachat.api.JsonChatEvent;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.events.JsonChatEvent;
 
 public class ConsoleLogChat implements Listener{
 	

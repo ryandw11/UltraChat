@@ -1,4 +1,4 @@
-package me.ryandw11.ultrachat.api;
+package me.ryandw11.ultrachat.api.events;
 
 import java.util.Set;
 
@@ -9,16 +9,15 @@ import org.bukkit.event.HandlerList;
  * Event class - 
  * Async Event
  * @author Ryandw11
- *
  */
-public class WorldChatEvent extends Event {
+public class JsonChatEvent extends Event {
 	 private static final HandlerList handlers = new HandlerList();
 	 private Player player;
 	 private String chat;
 	 private Set<Player> recipients;
 	 private boolean cancelled;
 
-	 public WorldChatEvent(Player p, String chat, Set<Player> recipients) {
+	 public JsonChatEvent(Player p, String chat, Set<Player> recipients) {
 		 super(true);
 	     player = p;
 	     this.chat = chat;

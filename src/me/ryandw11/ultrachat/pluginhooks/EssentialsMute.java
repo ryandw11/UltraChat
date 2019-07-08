@@ -6,9 +6,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import com.earth2me.essentials.Essentials;
-import me.ryandw11.ultrachat.api.GlobalChatEvent;
-import me.ryandw11.ultrachat.api.JsonChatEvent;
-import me.ryandw11.ultrachat.api.WorldChatEvent;
+
+import me.ryandw11.ultrachat.api.events.GlobalChatEvent;
+import me.ryandw11.ultrachat.api.events.JsonChatEvent;
+import me.ryandw11.ultrachat.api.events.WorldChatEvent;
 
 public class EssentialsMute implements Listener{
 	
