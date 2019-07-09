@@ -16,7 +16,13 @@ import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
 
 
 
-
+/**
+ * 
+ * This class is deperecated. Use {@link JSONChatBuilder} with {@link MessageBuilder} instead.
+ * @deprecated
+ * @author Ryandw11
+ *
+ */
 public class JSON {
 	
 	//private UltraChat plugin;
