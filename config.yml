@@ -45,18 +45,19 @@ Blocked_Words:
 # This is a system to create JSON pockets with in a message.
 # It uses a placerholder system to use.
 #The name of the component:
-example:
+JSON_Components:
+    example:
     #The base message of the component
-    Message: 'Example Message'
-    #The component events
-    Events:
+        Message: 'Example Message'
+        #The component events
+        Events:
         #A click event {Optional}
-        Click:
+            Click:
             # One and only one of the Click Operations. Full list includes: {Open_URL, Run_Command, Suggest_Command}
-            Open_URL: 'https://www.spigotmc.org/'
-        # When the player hovers over the base text.
-        Hover:
-            Show_Text:
+                Open_URL: 'https://www.spigotmc.org/'
+            # When the player hovers over the base text.
+            Hover:
+                Show_Text:
                 - 'This is the first line'
                 - '&cThis is the second line'
 ##############################################

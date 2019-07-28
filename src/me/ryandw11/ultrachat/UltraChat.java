@@ -34,6 +34,9 @@ import me.ryandw11.ultrachat.listner.StopChat;
 import me.ryandw11.ultrachat.pluginhooks.AdvancedBanMute;
 import me.ryandw11.ultrachat.pluginhooks.EssentialsMute;
 import me.ryandw11.ultrachat.util.Metrics;
+import me.ryandw11.ultrachat.util.papi.PAPIDisabled;
+import me.ryandw11.ultrachat.util.papi.PAPIEnabled;
+import me.ryandw11.ultrachat.util.papi.PlaceHolderAPIHook;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.permission.Permission;
 
@@ -46,7 +49,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * Main Class
  * @author Ryandw11
- * @version 2.3.1
+ * @version 2.4
  * Updated for 1.14.
  * (Very few API methods here)
  */
@@ -63,6 +66,8 @@ public class UltraChat extends JavaPlugin{
 	public String defaultChannel;
 	public ArrayList<UUID> stafftoggle = new ArrayList<>();
 	public ArrayList<UUID> spytoggle = new ArrayList<>();
+	
+	public PlaceHolderAPIHook papi;
 	 
 	public File datafile = new File(getDataFolder() + "/data/players.yml");
 	public FileConfiguration data = YamlConfiguration.loadConfiguration(datafile);
@@ -90,15 +95,13 @@ public class UltraChat extends JavaPlugin{
 				Bukkit.getPluginManager().disablePlugin(this);
 				return;
 	        }
-		 if (getServer().getPluginManager().getPlugin("PlaceholderAPI") == null) {
-			 getLogger().severe("§cWarning: You do not have PlaceholderAPI installed! This plugin is now disabled!");
-	          Bukkit.getPluginManager().disablePlugin(this);
-	          return;
-		 }
-		 else{
-			 getLogger().info(String.format("UltraChat is enabled and running fine! V: %s", getDescription().getVersion())); 
+		 if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			 getLogger().info("Hooked into PlaceholderAPI! You can use the place holders!");
+	         papi = new PAPIEnabled();
+		 }else {
+			 papi = new PAPIDisabled();
 		 }
+		 getLogger().info(String.format("UltraChat is enabled and running fine! V: %s", getDescription().getVersion())); 
 		 if(getServer().getPluginManager().getPlugin("AdvancedBan") != null && getConfig().getBoolean("pluginhooks.AdvancedBan")){
 			 getLogger().info("AdvancedBan detected! Activating hook!");
 			 getLogger().info("Mutes will now work with the chat types.");

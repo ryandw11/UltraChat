@@ -2,6 +2,8 @@ package me.ryandw11.ultrachat.api;
 
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.ComponentBuilder.FormatRetention;
+import net.md_5.bungee.api.chat.TextComponent;
 
 /**
  * Easy Builder to build several JSON sections into a single message.
@@ -23,7 +25,7 @@ public class MessageBuilder {
 	 * @return The MessageBuilder to chain.
 	 */
 	public MessageBuilder addJSON(JSONChatBuilder json) {
-		compon.append(json.build());
+		compon.append(json.build(), FormatRetention.FORMATTING);
 		return this;
 	}
 	
@@ -33,7 +35,8 @@ public class MessageBuilder {
 	 * @return the builder to chain
 	 */
 	public MessageBuilder addString(String s) {
-		compon.append(s);
+		TextComponent tc = new TextComponent(s);
+		compon.append(tc, FormatRetention.FORMATTING);
 		return this;
 	}
 	
@@ -43,7 +46,7 @@ public class MessageBuilder {
 	 * @return The Buider to chain
 	 */
 	public MessageBuilder addBaseComponent(BaseComponent[] bc) {
-		compon.append(bc);
+		compon.append(bc, FormatRetention.FORMATTING);
 		return this;
 	}
 	
