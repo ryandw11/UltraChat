@@ -3,11 +3,10 @@ package me.ryandw11.ultrachat.listner;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Lang;
-import me.ryandw11.ultrachat.api.events.JsonChatEvent;
+import me.ryandw11.ultrachat.api.events.UltraChatEvent;
 /**
  * Prevent players from chatting when the chat is stopped.
  * @author Ryandw11
@@ -21,19 +20,7 @@ public class StopChat implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent event) {	
-		if(plugin.JSON) return;
-		Player p = event.getPlayer();
-		if(plugin.chatStop){
-			if(!p.hasPermission("ultrachat.stopchat.bypass")){
-				event.setCancelled(true);
-				p.sendMessage(Lang.STOP_CHAT_MESSAGE.toString());
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onChat(JsonChatEvent e){
+	public void onChat(UltraChatEvent e){
 		Player p = e.getPlayer();
 		if(plugin.chatStop){
 			if(!p.hasPermission("ultrachat.stopchat.bypass")){

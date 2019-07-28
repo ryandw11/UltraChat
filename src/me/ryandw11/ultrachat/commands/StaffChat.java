@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.events.StaffChatEvent;
+import me.ryandw11.ultrachat.api.managers.JComponentManager;
 
 public class StaffChat implements CommandExecutor {
 	private UltraChat plugin;
@@ -28,12 +30,24 @@ public class StaffChat implements CommandExecutor {
 				
 				for (int i = 0; i < args.length; i++){
 					message = message + " " + args[i];
-					
 				}
+				StaffChatEvent sce;
+				if (p instanceof Player)
+					sce = new StaffChatEvent((Player) p, message);
+				else
+					sce = new StaffChatEvent(null, message);
+				
+				Bukkit.getServer().getPluginManager().callEvent(sce);
+				
+				if(sce.isCancelled()) return true;
+				
 				for(Player p1 : Bukkit.getOnlinePlayers()){
 					if(p1.hasPermission("ultrachat.staffchat")){
 						if(!plugin.stafftoggle.contains(p1.getUniqueId())){
-							p1.sendMessage(Lang.STAFF_CHAT_FORMAT.toString().replace("%p", p.getName()).replace("%s", message));
+							if (p instanceof Player)
+								p1.spigot().sendMessage(JComponentManager.formatComponents(Lang.STAFF_CHAT_FORMAT.toString().replace("%p", p.getName()).replace("%s", message), (Player) p));
+							else
+								p1.spigot().sendMessage(JComponentManager.formatComponents(Lang.STAFF_CHAT_FORMAT.toString().replace("%p", p.getName()).replace("%s", message)));
 						}// end of if
 					}
 				}//end of for

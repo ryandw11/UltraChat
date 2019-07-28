@@ -9,6 +9,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.api.ChatType;
+import me.ryandw11.ultrachat.api.events.UltraChatEvent;
+import me.ryandw11.ultrachat.api.events.properties.ChannelProperties;
 /**
  * Channels without any kind of json involved.
  * @author Ryandw11
@@ -39,6 +42,23 @@ public class Channels implements Listener {
 				}
 			}
 		}
+		
+		ChannelProperties cp = new ChannelProperties(false, channel);
+		UltraChatEvent uce = new UltraChatEvent(p, e.getMessage(), e.getRecipients(), ChatType.CHANNEL, cp);
+		Bukkit.getServer().getPluginManager().callEvent(uce);
+		
+		if (uce.isCancelled()) {
+			e.setCancelled(true);
+			return;
+		}
+		if(uce.getRecipients() != e.getRecipients()) {
+			e.getRecipients().removeAll(Bukkit.getOnlinePlayers());
+			e.getRecipients().addAll(uce.getRecipients());
+		}
+		
+		e.setMessage(uce.getMessage());
+		
+		
 		e.setFormat(PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.channel.getString(channel + ".prefix")) + ChatColor.translateAlternateColorCodes('&', plugin.channel.getString(channel + ".format").replace("%prefix%", pf.getPrefix()).replace("%suffix%", pf.getSuffix()).replace("%player%", "%s") + pf.getColor() + "%s")));	
 	}
 }

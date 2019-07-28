@@ -8,8 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
-import me.ryandw11.ultrachat.api.channels.ChannelBuilder;
-import me.ryandw11.ultrachat.api.channels.ChatChannel;
 import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 /**
  * UltraChatAPI
@@ -51,32 +49,28 @@ public class UltraChatAPI{
 		plugin.saveConfig();
 	}
 	/**
-	 * Get the current chat mode.
-	 * @return chat mode
+	 * Get the current chat type.
+	 * @return chat type
 	 */
-	public ChatMode getMode(){
+	public ChatType getChatType(){
 		return plugin.md;
 	}
+	
+	
 	/**
 	 * Set the chat mode. Can be disabled in the config.
 	 * @param cm The chat manager
 	 */
-	public void setMode(ChatMode cm){
-		if(!plugin.getConfig().getBoolean("apirestrict") && cm != ChatMode.NONE){
+	public void setType(ChatType cm){
+		if(!plugin.getConfig().getBoolean("apirestrict")){
 			plugin.getConfig().set("chat_format", cm.toString().toLowerCase());
 			plugin.getLogger().warning("A plugin has changed your chat mode to " + cm.toString() + "!");
 			plugin.saveConfig();
 			return;
 		}
-		if(!plugin.getConfig().getBoolean("apirestrict") && cm == ChatMode.NONE)
-		{
-			plugin.getConfig().set("chat_format", "");
-			plugin.getLogger().warning("A plugin has changed your chat mode to " + cm.toString() + "!");
-			plugin.saveConfig();
-			return;
-		}
-		plugin.getLogger().warning("A plugin has tried to changed your chat mode!");
+		plugin.getLogger().warning("A plugin has tried to changed your chat type!");
 	}
+	
 	/**
 	 * Grab the player's formatting.
 	 * @param p The player.
@@ -156,33 +150,13 @@ public class UltraChatAPI{
 		plugin.getConfig().set("Blocked_Words", words);
 		plugin.saveConfig();
 	}
-	/**
-	 * Create a channel.
-	 * @param channel
-	 * @param prefix
-	 * @param permission
-	 * @param always_appear
-	 * @param format
-	 * @param json
-	 * @deprecated
-	 */
 	
-	public void createChannel(String channel, String prefix, String permission, boolean always_appear, String format, ArrayList<String> json){
-		plugin.channel.set(channel + ".prefix", prefix);
-		plugin.channel.set(channel + ".permission", permission);
-		plugin.channel.set(channel + ".always_appear", always_appear);
-		plugin.channel.set(channel + ".format", format);
-		plugin.channel.set(channel + ".JSON", json);
-		plugin.saveChannel();
-	}
 	/**
-	 * Remove a channel.
-	 * @deprecated
-	 * @param channel
+	 * If components are enabled.
+	 * @return If components are enabled.
 	 */
-	public void removeChannel(String channel){
-		plugin.channel.set(channel, null);
-		plugin.saveChannel();
+	public boolean isComponents() {
+		return plugin.getConfig().getBoolean("Components_Enabled");
 	}
 	
 	/**
@@ -191,13 +165,6 @@ public class UltraChatAPI{
 	 */
 	public String getFormattingType(){
 		return plugin.getConfig().getString("chat_format");
-	}
-	/**
-	 * Get if the channel has json enabled or not.
-	 * @return True or false.
-	 */
-	public boolean isChannelJson(){
-		return plugin.getConfig().getBoolean("Channel_Json");
 	}
 	
 	/**
@@ -209,13 +176,6 @@ public class UltraChatAPI{
 		if(plugin.channel.contains(chan))
 			return true;
 		return false;
-	}
-	/**
-	 * Get if range has json or not.
-	 * @return True or False.
-	 */
-	public boolean isRangeJson(){
-		return plugin.getConfig().getBoolean("Range_Json");
 	}
 	/**
 	 * Get the current active hooks.

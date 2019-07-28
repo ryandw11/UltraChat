@@ -15,17 +15,11 @@ global:
     #Messages from this channel will always appear no matter what channel the player is in.
     always_appear: false
     #This is the chat format ***Note the channel prefix is added by default.
+    #The format support components from the config.yml. See the Normal Chat for an example.
     format: '%prefix% %player% %suffix%&7>> '
-    #This is the JSON format:
-    JSON:
-        - '&3Money: $&b%vault_eco_balance_fixed%'
-        - '&3Username: &f%player_name%'
 #Example Channel:
 vip:
     prefix: '&a[&6VIP&a]&r'
     permission: 'channel.vip'
     always_appear: false
     format: '%prefix% %player% %suffix%&7>> '
-    JSON:
-        - '&3Money: $&b%vault_eco_balance_fixed%'
-        - '&3Username: &f%player_name%'

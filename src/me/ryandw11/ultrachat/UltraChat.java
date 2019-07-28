@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import me.ryandw11.ultrachat.api.ChatMode;
+import me.ryandw11.ultrachat.api.ChatType;
 import me.ryandw11.ultrachat.api.Lang;
 import me.ryandw11.ultrachat.commands.ChannelCmd;
 import me.ryandw11.ultrachat.commands.ChatCommand;
@@ -16,10 +16,12 @@ import me.ryandw11.ultrachat.commands.StaffChat;
 import me.ryandw11.ultrachat.commands.StaffChatToggle;
 import me.ryandw11.ultrachat.commands.World;
 import me.ryandw11.ultrachat.commands.SpyCommand;
+import me.ryandw11.ultrachat.formatting.ChannelJSON;
 import me.ryandw11.ultrachat.formatting.Channels;
-import me.ryandw11.ultrachat.formatting.Chat_Json;
 import me.ryandw11.ultrachat.formatting.Normal;
+import me.ryandw11.ultrachat.formatting.NormalJSON;
 import me.ryandw11.ultrachat.formatting.Range;
+import me.ryandw11.ultrachat.formatting.RangeJSON;
 import me.ryandw11.ultrachat.gui.ColorGUI;
 import me.ryandw11.ultrachat.gui.ColorGUI_1_13_R2;
 import me.ryandw11.ultrachat.gui.ColorGUI_Latest;
@@ -62,7 +64,7 @@ public class UltraChat extends JavaPlugin{
 	public Boolean chatStop = false;
 	public Boolean channelEnabled = false;
 	public Boolean JSON = false;
-	public ChatMode md;
+	public ChatType md;
 	public String defaultChannel;
 	public ArrayList<UUID> stafftoggle = new ArrayList<>();
 	public ArrayList<UUID> spytoggle = new ArrayList<>();
@@ -143,47 +145,43 @@ public class UltraChat extends JavaPlugin{
 			getLogger().info("UltraChat will not format the chat. To change this go into the config.");
 			return;
 		}
+		
+		boolean isComponents = plugin.getConfig().getBoolean("Components_Enabled");
+		
 		switch(type.toLowerCase()){
 		case "normal":
-			Bukkit.getServer().getPluginManager().registerEvents(new Normal(), this);
-			JSON = false;
-			channelEnabled = false;
-			md = ChatMode.NORMAL;
+			if(isComponents)
+				Bukkit.getServer().getPluginManager().registerEvents(new NormalJSON(), this);
+			else
+				Bukkit.getServer().getPluginManager().registerEvents(new Normal(), this);
+			md = ChatType.NORMAL;
 			getLogger().info("Normal chat mode activated!");
 			break;
-		case "json":
-			Bukkit.getServer().getPluginManager().registerEvents(new Chat_Json(), this);
-			JSON = true;
-			channelEnabled = false;
-			md = ChatMode.JSON;
-			getLogger().info("Json chat activated!");
-			break;
 		case "channel":
-			channelEnabled = true;
-			JSON = false;
-			Bukkit.getServer().getPluginManager().registerEvents(new Channels(), this);
-			md = ChatMode.CHANNEL;
+			if(isComponents)
+				Bukkit.getServer().getPluginManager().registerEvents(new ChannelJSON(), this);
+			else
+				Bukkit.getServer().getPluginManager().registerEvents(new Channels(), this);
+			md = ChatType.CHANNEL;
 			getLogger().info("Channel chat mode enabled.");
 			break;
-		case "channel_json":
-			JSON = true;
-			channelEnabled = true;
-			md = ChatMode.JSON_CHANNEL;
-			Bukkit.getServer().getPluginManager().registerEvents(new Chat_Json(), this);
-			getLogger().info("Channel chat mode enabled with json.");
-			break;
 		case "range":
-			Bukkit.getServer().getPluginManager().registerEvents(new Range(), this);
+			if(isComponents)
+				Bukkit.getServer().getPluginManager().registerEvents(new RangeJSON(), this);
+			else
+				Bukkit.getServer().getPluginManager().registerEvents(new Range(), this);
 			getCommand("global").setExecutor(new Global());
 			getCommand("world").setExecutor(new World());
 			getLogger().info("Range chat mode enabled. The commands /global and /world are now also active.");
-			md = ChatMode.RANGE;
+			md = ChatType.RANGE;
 			break;
 		default:
-			getLogger().warning("§cThe chat format value is not correct!");
-			getLogger().warning("§cIt most be one of the following: Normal, Json, Channel, Range. (Caps do not matter)");
-			getLogger().warning("§cNo formatting has been enabled!");
-			md = ChatMode.NONE;
+			if(isComponents)
+				Bukkit.getServer().getPluginManager().registerEvents(new NormalJSON(), this);
+			else
+				Bukkit.getServer().getPluginManager().registerEvents(new Normal(), this);
+			md = ChatType.NORMAL;
+			getLogger().info("Normal chat mode activated!");
 			break;
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ClickEvent;
@@ -38,7 +39,11 @@ public class JSONChatBuilder {
 	 * @param p The player to use when doing PlaceHolders.
 	 */
 	public JSONChatBuilder(String displayMessage, Player p) {
-		this.displayMessage = new ComponentBuilder(displayMessage);
+		PlayerFormatting pf = new PlayerFormatting(p);
+		String form = displayMessage.replace("%prefix%", pf.getPrefix())
+				.replace("%player%", p.getDisplayName())
+				.replace("%suffix%", pf.getSuffix());
+		this.displayMessage = new ComponentBuilder(UltraChat.plugin.papi.translatePlaceholders(form, p));
 		this.p = p;
 	}
 	
@@ -78,7 +83,12 @@ public class JSONChatBuilder {
 	 * @return The builder
 	 */
 	public JSONChatBuilder setClickRunCommand(String command) {
-		this.displayMessage.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+		if(p == null)
+			this.displayMessage.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command));
+		else
+			this.displayMessage.event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, 
+					UltraChat.plugin.papi.translatePlaceholders(command.replace("%player%", p.getName()), p)
+					));
 		return this;
 	}
 	
@@ -88,7 +98,12 @@ public class JSONChatBuilder {
 	 * @return The Builder
 	 */
 	public JSONChatBuilder setClickSuggestCommand(String command) {
-		this.displayMessage.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+		if(p == null)
+			this.displayMessage.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command));
+		else
+			this.displayMessage.event(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, 
+					UltraChat.plugin.papi.translatePlaceholders(command.replace("%player%", p.getName()), p)
+					));
 		return this;
 	}
 	
