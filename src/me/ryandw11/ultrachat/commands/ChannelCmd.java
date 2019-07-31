@@ -8,7 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.api.ChatType;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.UltraChatAPI;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -33,7 +35,8 @@ public class ChannelCmd implements CommandExecutor {
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', Lang.NO_PERM.toString()));
 			return true;
 		}
-		if(!plugin.channelEnabled){
+		UltraChatAPI uapi = new UltraChatAPI();
+		if(uapi.getChatType() != ChatType.CHANNEL){
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', Lang.ERROR_CHANNEL_ENABLED.toString()));
 			return true;
 		}

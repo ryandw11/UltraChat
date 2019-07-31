@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import me.ryandw11.ultrachat.api.ChatType;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.managers.AddonManager;
 import me.ryandw11.ultrachat.commands.ChannelCmd;
 import me.ryandw11.ultrachat.commands.ChatCommand;
 import me.ryandw11.ultrachat.commands.CommandTabCompleter;
@@ -80,6 +81,7 @@ public class UltraChat extends JavaPlugin{
 	public static File LANG_FILE;
 	
 	private ColorGUI colorGUI;
+	public AddonManager addonManager;
 
 	
 
@@ -127,6 +129,7 @@ public class UltraChat extends JavaPlugin{
 			@SuppressWarnings("unused")
 			Metrics m = new Metrics(this);
 		}
+		addonManager = new AddonManager();
 	}
 	
 	@Override

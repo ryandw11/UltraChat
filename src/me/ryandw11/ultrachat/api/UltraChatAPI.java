@@ -3,11 +3,15 @@ package me.ryandw11.ultrachat.api;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.api.channels.ChannelBuilder;
+import me.ryandw11.ultrachat.api.channels.ChatChannel;
+import me.ryandw11.ultrachat.api.managers.AddonManager;
 import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 /**
  * UltraChatAPI
@@ -48,6 +52,16 @@ public class UltraChatAPI{
 		plugin.getConfig().set("Custom_Chat." + number + ".JSON", json);
 		plugin.saveConfig();
 	}
+	
+	public ChatChannel getPlayerCurrentChannel(UUID player) {
+		return new ChannelBuilder(plugin.data.getString(player + ".channel")).build();
+	}
+	
+	public AddonManager getAddonManager() {
+		return plugin.addonManager;
+	}
+	
+	
 	/**
 	 * Get the current chat type.
 	 * @return chat type
