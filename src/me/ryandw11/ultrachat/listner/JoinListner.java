@@ -2,9 +2,9 @@ package me.ryandw11.ultrachat.listner;
 
 import java.util.List;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Lang;
+import me.ryandw11.ultrachat.api.managers.JComponentManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -99,8 +99,8 @@ public class JoinListner implements Listener {
 			List <String> motd = plugin.getConfig().getStringList("Motd");
 			for(String OutPut : motd){
 				String message = OutPut;
-				message = PlaceholderAPI.setPlaceholders(p, message);
-				p.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+				message = plugin.papi.translatePlaceholders(message, p);
+				p.spigot().sendMessage(JComponentManager.formatComponents(ChatColor.translateAlternateColorCodes('&', message), p));
 			}
 
 		}
@@ -115,7 +115,10 @@ public class JoinListner implements Listener {
 	public void NewPlayer(PlayerJoinEvent event){
 		Player p = event.getPlayer();	
 		if(!(p.hasPlayedBefore()) && !(plugin.getConfig().getString("New_Player").equalsIgnoreCase("none"))){
-			Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("New_Player").replace("%player%", p.getDisplayName())));
+			String msg = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("New_Player").replace("%player%", p.getDisplayName()));
+			for(Player pl : Bukkit.getOnlinePlayers()) {
+				pl.spigot().sendMessage(JComponentManager.formatComponents(msg, p));
+			}
 		}
 		
 	}

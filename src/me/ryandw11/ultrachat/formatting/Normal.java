@@ -11,6 +11,9 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.api.ChatType;
+import me.ryandw11.ultrachat.api.events.UltraChatEvent;
+import me.ryandw11.ultrachat.api.events.properties.NormalProperties;
 /**
  * Normal chat formatting with no channels or Json.
  * @author Ryandw11
@@ -21,16 +24,33 @@ public class Normal implements Listener {
 	public Normal(){
 		plugin = UltraChat.plugin;
 	}
-	//TODO Fix this and make it work
 	
 	@EventHandler
 	public void onChat(AsyncPlayerChatEvent e){
 		PlayerFormatting pf = new PlayerFormatting(e.getPlayer());
 		Player p = e.getPlayer();
+		
 		if(p.hasPermission("ultrachat.chat.color")){
 			e.setMessage(ChatColor.translateAlternateColorCodes('&', e.getMessage()));
 		}
-		if(p.isOp()){
+		
+		NormalProperties np = new NormalProperties(false);
+		UltraChatEvent uce = new UltraChatEvent(p, e.getMessage(), e.getRecipients(), ChatType.NORMAL, np);
+		Bukkit.getServer().getPluginManager().callEvent(uce);
+		
+		if(uce.isCancelled()) {
+			e.setCancelled(true);
+			return;
+		}
+		
+		if(e.getRecipients() != uce.getRecipients()) {
+			e.getRecipients().removeAll(e.getRecipients());
+			e.getRecipients().addAll(uce.getRecipients());
+		}
+		
+		e.setMessage(uce.getMessage());
+	
+		if(p.isOp() && p.hasPermission("ultrachat.formatting.op")){
 			try{
 				e.setFormat(pf.getOpFormat().replace("%prefix%", pf.getPrefix()).replace("%suffix%", pf.getSuffix()).replace("%player%", "%s") + pf.getColor() + "%s");
 			}catch (UnknownFormatConversionException ex){

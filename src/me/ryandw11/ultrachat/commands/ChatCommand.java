@@ -258,7 +258,7 @@ public class ChatCommand implements CommandExecutor {
 				}
 				else if(args.length == 1 && args[0].equalsIgnoreCase("hooks")){
 					if(p.hasPermission("ultrachat.hooks")){
-						UltraChatAPI uapi = new UltraChatAPI(plugin);
+						UltraChatAPI uapi = new UltraChatAPI();
 						p.sendMessage(ChatColor.BLUE + "Ultra Chat Hooks:");
 						if(uapi.getActiveHooks() == null){
 							p.sendMessage(ChatColor.GREEN + "No hooks are currently active!");

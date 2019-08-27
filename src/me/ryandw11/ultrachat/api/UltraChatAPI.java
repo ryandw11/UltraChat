@@ -3,80 +3,29 @@ package me.ryandw11.ultrachat.api;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
+import me.ryandw11.ultrachat.api.channels.ChannelBuilder;
+import me.ryandw11.ultrachat.api.channels.ChatChannel;
+import me.ryandw11.ultrachat.api.managers.AddonManager;
 import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 /**
  * UltraChatAPI
  * @author Ryandw11
- * @version 2.1.0
+ * @version 2.4
  */
 
 public class UltraChatAPI{
-	/*
-	 * 
-	 * 		UltraChatAPI ch = new UltraChatAPI(UltraChat.plugin); < Method
-	 * 
-	 * 
-	 * 
-	 */
-	/**
-	 * Grab the Instance
-	 * @return #getPlugin()
-	 * @deprecated
-	 */
-	public static UltraChat getInstance(){
-		return getPlugin();
+	private UltraChat plugin;
+	public UltraChatAPI(){
+		this.plugin = UltraChat.plugin;
 	}
 	
-	private UltraChat plugin;
-	public UltraChatAPI(UltraChat plugin){
-		this.plugin = plugin;
-	}
-	/**
-	 * Grab the player's current channel.
-	 * @param player
-	 * @return The player's current channel.
-	 */
-	public String getPlayerChannel(Player player){
-		return plugin.data.getString(player.getUniqueId() + ".channel");
-	}
-	/**
-	 * Get the servers default channel.
-	 * @return Default Channel
-	 */
-	public String getDefaultChannel(){
-		return plugin.getConfig().getString("Default_Channel");
-	}
-	/**
-	 * Set the player's channel.
-	 * @param player
-	 * @param channel
-	 */
-	public void setPlayerChannel(Player player, String channel){
-		plugin.data.set(player.getUniqueId() + ".channel", channel);
-		plugin.saveFile();
-	}
-	/**
-	 * Set the default channel
-	 * @param channel
-	 */
-	public void setDefaultChannel(String channel){
-		plugin.getConfig().set("Default_Config", channel);
-		plugin.saveConfig();
-	}
-	/**
-	 * Get a channel's json.
-	 * @param channel
-	 * @return Json array
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getChannelJson(String channel){
-		return (ArrayList<String>) plugin.channel.get(channel + ".JSON");
-	}
+	
 	/**
 	 * Get a format's json.
 	 * @param number
@@ -85,15 +34,6 @@ public class UltraChatAPI{
 	@SuppressWarnings("unchecked")
 	public ArrayList<String> getChatFormatJson(String number){
 		return (ArrayList<String>) plugin.getConfig().get("Custom_Chat." + number + ".JSON");
-	}
-	/**
-	 * Set a channel's json.
-	 * @param json
-	 * @param channel
-	 */
-	public void setChannelJson(ArrayList<String> json, String channel){
-		plugin.channel.set(channel + ".json", json);
-		plugin.saveChannel();
 	}
 	/**
 	 * Set a format's json.
@@ -105,49 +45,48 @@ public class UltraChatAPI{
 		plugin.getConfig().set("Custom_Chat." + number + ".JSON", json);
 		plugin.saveConfig();
 	}
+	
 	/**
-	 * Check to see if channels are enabled.
-	 * @deprecated Use getMode()
-	 * @return boolean
+	 * Get the current channel of a player.
+	 * @param player The uuid of the player you want to get.
+	 * @return The chat channel.
 	 */
-	public boolean isChannelEnabled(){
-		return plugin.getConfig().getBoolean("Channels");
+	public ChatChannel getPlayerCurrentChannel(UUID player) {
+		return new ChannelBuilder(plugin.data.getString(player + ".channel")).build();
 	}
+	
 	/**
-	 * Check to see if json is enabled.
-	 * @deprecated Use getMode()
-	 * @return boolean
+	 * Get the addon manager.
+	 * @return The addon manager.
 	 */
-	public boolean isJsonEnabled(){
-		return plugin.getConfig().getBoolean("JSON");
+	public AddonManager getAddonManager() {
+		return plugin.addonManager;
 	}
+	
+	
 	/**
-	 * Get the current chat mode.
-	 * @return chat mode
+	 * Get the current chat type.
+	 * @return chat type
 	 */
-	public ChatMode getMode(){
+	public ChatType getChatType(){
 		return plugin.md;
 	}
+	
+	
 	/**
 	 * Set the chat mode. Can be disabled in the config.
 	 * @param cm The chat manager
 	 */
-	public void setMode(ChatMode cm){
-		if(!plugin.getConfig().getBoolean("apirestrict") && cm != ChatMode.NONE){
+	public void setType(ChatType cm){
+		if(!plugin.getConfig().getBoolean("apirestrict")){
 			plugin.getConfig().set("chat_format", cm.toString().toLowerCase());
 			plugin.getLogger().warning("A plugin has changed your chat mode to " + cm.toString() + "!");
 			plugin.saveConfig();
 			return;
 		}
-		if(!plugin.getConfig().getBoolean("apirestrict") && cm == ChatMode.NONE)
-		{
-			plugin.getConfig().set("chat_format", "");
-			plugin.getLogger().warning("A plugin has changed your chat mode to " + cm.toString() + "!");
-			plugin.saveConfig();
-			return;
-		}
-		plugin.getLogger().warning("A plugin has tried to changed your chat mode!");
+		plugin.getLogger().warning("A plugin has tried to changed your chat type!");
 	}
+	
 	/**
 	 * Grab the player's formatting.
 	 * @param p The player.
@@ -227,53 +166,21 @@ public class UltraChatAPI{
 		plugin.getConfig().set("Blocked_Words", words);
 		plugin.saveConfig();
 	}
-	/**
-	 * Create a channel.
-	 * @param channel
-	 * @param prefix
-	 * @param permission
-	 * @param always_appear
-	 * @param format
-	 * @param json
-	 */
-	
-	public void createChannel(String channel, String prefix, String permission, boolean always_appear, String format, ArrayList<String> json){
-		plugin.channel.set(channel + ".prefix", prefix);
-		plugin.channel.set(channel + ".permission", permission);
-		plugin.channel.set(channel + ".always_appear", always_appear);
-		plugin.channel.set(channel + ".format", format);
-		plugin.channel.set(channel + ".JSON", json);
-		plugin.saveChannel();
-	}
-	/**
-	 * Remove a channel.
-	 * @param channel
-	 */
-	public void removeChannel(String channel){
-		plugin.channel.set(channel, null);
-		plugin.saveChannel();
-	}
 	
 	/**
-	 * Grab the plugin.
-	 * @return plugin. Don't worry about the return
+	 * If components are enabled.
+	 * @return If components are enabled.
 	 */
-	public static UltraChat getPlugin(){
-		return UltraChat.plugin;
+	public boolean isComponents() {
+		return plugin.getConfig().getBoolean("Components_Enabled");
 	}
+	
 	/**
 	 * Get the current formatting type.
 	 * @return The value of the config.
 	 */
 	public String getFormattingType(){
 		return plugin.getConfig().getString("chat_format");
-	}
-	/**
-	 * Get if the channel has json enabled or not.
-	 * @return True or false.
-	 */
-	public boolean isChannelJson(){
-		return plugin.getConfig().getBoolean("Channel_Json");
 	}
 	
 	/**
@@ -285,13 +192,6 @@ public class UltraChatAPI{
 		if(plugin.channel.contains(chan))
 			return true;
 		return false;
-	}
-	/**
-	 * Get if range has json or not.
-	 * @return True or False.
-	 */
-	public boolean isRangeJson(){
-		return plugin.getConfig().getBoolean("Range_Json");
 	}
 	/**
 	 * Get the current active hooks.

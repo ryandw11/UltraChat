@@ -1,32 +1,37 @@
 package me.ryandw11.ultrachat.formatting;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import me.clip.placeholderapi.PlaceholderAPI;
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Util;
 import net.md_5.bungee.api.ChatColor;
 /**
- * Class for formatting player chat easily. (Demo: May not stay).
+ * Class for formatting player chat easily.
  * @author Ryandw11
  *
  */
 public class PlayerFormatting {
 	private UltraChat plugin;
+	
+	/**
+	 * Get the formatting for a player.
+	 * @param p
+	 */
 	public PlayerFormatting(Player p){
 		plugin = UltraChat.plugin;
 		
 		color = ChatColor.translateAlternateColorCodes('&', plugin.data.getString(p.getUniqueId() + ".color"));	
 		prefix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerPrefix(p));
 		suffix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerSuffix(p));
-		formatOp = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat.Op_Chat.Format")));
-		defaults = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat.Default_Chat.Format")));
-		global = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Global.format")));
-		world = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("World.format")));
-		local = PlaceholderAPI.setPlaceholders(p, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Local.format")));
+		formatOp = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat.Op_Chat.Format")), p);
+		defaults = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat.Default_Chat.Format")), p);
+		global = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Global.format")), p);
+		world = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("World.format")), p);
+		local = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Local.format")), p);
+		this.p = p;
 	}
 	
+	private Player p;
 	private String prefix;
 	private String suffix;
 	public String color;
@@ -62,6 +67,10 @@ public class PlayerFormatting {
 	}
 	public String getDefaultFormat(){
 		return defaults;
+	}
+	
+	public String getCustomFormat(int num) {
+		return plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat." + num + ".Format")), p);
 	}
 	
 }
