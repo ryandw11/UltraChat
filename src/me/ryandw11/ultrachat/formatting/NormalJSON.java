@@ -41,7 +41,7 @@ public class NormalJSON implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		if (p.isOp()) {
+		if (p.isOp() && p.hasPermission("ultrachat.formatting.op")) {
 			String formats = pf.getOpFormat()
 					.replace("%prefix%", pf.getPrefix())
 					.replace("%suffix%", pf.getSuffix())

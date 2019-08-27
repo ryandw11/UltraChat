@@ -16,17 +16,10 @@ import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 /**
  * UltraChatAPI
  * @author Ryandw11
- * @version 2.1.0
+ * @version 2.4
  */
 
 public class UltraChatAPI{
-	/*
-	 * 
-	 * 		UltraChatAPI ch = new UltraChatAPI(UltraChat.plugin); < Method
-	 * 
-	 * 
-	 * 
-	 */
 	private UltraChat plugin;
 	public UltraChatAPI(){
 		this.plugin = UltraChat.plugin;
@@ -53,10 +46,19 @@ public class UltraChatAPI{
 		plugin.saveConfig();
 	}
 	
+	/**
+	 * Get the current channel of a player.
+	 * @param player The uuid of the player you want to get.
+	 * @return The chat channel.
+	 */
 	public ChatChannel getPlayerCurrentChannel(UUID player) {
 		return new ChannelBuilder(plugin.data.getString(player + ".channel")).build();
 	}
 	
+	/**
+	 * Get the addon manager.
+	 * @return The addon manager.
+	 */
 	public AddonManager getAddonManager() {
 		return plugin.addonManager;
 	}

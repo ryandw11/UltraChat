@@ -1,5 +1,5 @@
 name: UltraChat
-version: 2.3.3
+version: 2.4
 main: me.ryandw11.ultrachat.UltraChat
 author: Ryandw11
 description: A chat formatting plugin.
@@ -24,7 +24,7 @@ commands:
       aliases: [ccolor, chatcolor, uchatcolor, uccolor, chat color]
     channel:
       description: Change the channel you are using or display the help.
-      aliases: [chan, cn, ch]
+      aliases: [chan, cn, ch, channels]
     global:
       description: Used when using range chat!
       aliases: [g, gl, ug]

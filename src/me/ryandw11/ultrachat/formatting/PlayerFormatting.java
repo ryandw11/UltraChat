@@ -28,8 +28,10 @@ public class PlayerFormatting {
 		global = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Global.format")), p);
 		world = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("World.format")), p);
 		local = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Local.format")), p);
+		this.p = p;
 	}
 	
+	private Player p;
 	private String prefix;
 	private String suffix;
 	public String color;
@@ -68,7 +70,7 @@ public class PlayerFormatting {
 	}
 	
 	public String getCustomFormat(int num) {
-		return plugin.getConfig().getString("Custom_Chat." + num + ".Format");
+		return plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat." + num + ".Format")), p);
 	}
 	
 }
