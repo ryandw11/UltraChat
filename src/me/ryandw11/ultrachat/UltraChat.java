@@ -367,7 +367,7 @@ public class UltraChat extends JavaPlugin{
         } catch (ArrayIndexOutOfBoundsException w0w) {
         	version = " ";
         }
-        if (version.equals("v1_13_R2") || version.equals("v1_14_R1")) {
+        if (version.equals("v1_13_R2") || version.equals("v1_14_R1") || version.equals("v1_15_R1")) {
             
             Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
     		if(version.equals("v1_13_R2")) {
