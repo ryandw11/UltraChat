@@ -20,7 +20,7 @@ import me.ryandw11.ultrachat.api.Lang;
 
 /**
  * ColorGUI class.
- * Updated for 1.14+
+ * Updated for 1.16+
  * @author Ryandw11
  *
  */
@@ -80,49 +80,49 @@ public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
 		
 		//==========================================================
 
-		darkbluemeta.setDisplayName("§1Dark Blue Color Chat");
+		darkbluemeta.setDisplayName("ï¿½1Dark Blue Color Chat");
 		darkblueitem.setItemMeta(darkbluemeta);
 		
-		greenmeta.setDisplayName("§2Green Color Chat");
+		greenmeta.setDisplayName("ï¿½2Green Color Chat");
 		greenitem.setItemMeta(greenmeta);
 		
-		lightbluemeta.setDisplayName("§3Cyan Color Chat");
+		lightbluemeta.setDisplayName("ï¿½3Cyan Color Chat");
 		lightblueitem.setItemMeta(lightbluemeta);
 		
-		redmeta.setDisplayName("§4Red Color Chat");
+		redmeta.setDisplayName("ï¿½4Red Color Chat");
 		reditem.setItemMeta(redmeta);
 		
-		purplemeta.setDisplayName("§5Purple Color Chat");
+		purplemeta.setDisplayName("ï¿½5Purple Color Chat");
 		purpleitem.setItemMeta(purplemeta);
 		
-		goldmeta.setDisplayName("§6Gold Color Chat");
+		goldmeta.setDisplayName("ï¿½6Gold Color Chat");
 		golditem.setItemMeta(goldmeta);
 		
-		lightgraymeta.setDisplayName("§7Light Gray Color Chat");
+		lightgraymeta.setDisplayName("ï¿½7Light Gray Color Chat");
 		lightgrayitem.setItemMeta(lightgraymeta);
 		
-		graymeta.setDisplayName("§8Gray Color Chat");
+		graymeta.setDisplayName("ï¿½8Gray Color Chat");
 		grayitem.setItemMeta(graymeta);
 		
-		bluemeta.setDisplayName("§9Blue Color Chat");
+		bluemeta.setDisplayName("ï¿½9Blue Color Chat");
 		blueitem.setItemMeta(bluemeta);
 		
-		lightgreenmeta.setDisplayName("§aLight Green Color Chat");
+		lightgreenmeta.setDisplayName("ï¿½aLight Green Color Chat");
 		lightgreenitem.setItemMeta(lightgreenmeta);
 		
-		aquameta.setDisplayName("§bAqua Color Chat");
+		aquameta.setDisplayName("ï¿½bAqua Color Chat");
 		aquaitem.setItemMeta(aquameta);
 		
-		lightredmeta.setDisplayName("§cLight Red Color Chat");
+		lightredmeta.setDisplayName("ï¿½cLight Red Color Chat");
 		lightreditem.setItemMeta(lightredmeta);
 		
-		pinkmeta.setDisplayName("§dMagenta Color Chat");
+		pinkmeta.setDisplayName("ï¿½dMagenta Color Chat");
 		pinkitem.setItemMeta(pinkmeta);
 		
-		yellowmeta.setDisplayName("§eYellow Color Chat");
+		yellowmeta.setDisplayName("ï¿½eYellow Color Chat");
 		yellowitem.setItemMeta(yellowmeta);
 		
-		whitemeta.setDisplayName("§fWhite Color Chat");
+		whitemeta.setDisplayName("ï¿½fWhite Color Chat");
 		whiteitem.setItemMeta(whitemeta);
 		//==========================================================
 		

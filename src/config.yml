@@ -58,8 +58,6 @@ Leave_Message: '&e%player% has left the server!'
 #############################################
 # This is a system to create JSON pockets with in a message.
 # It uses a placerholder system to use.
-#If Components are enabled.
-Components_Enabled: true
 #The name of the component:
 JSON_Components:
     normal_chat:
@@ -103,36 +101,14 @@ console_log: false
 ########################
 # If you give a player the '*' permission they will have every single custom chat. 
 # When json is enabled the message is sent several times based on the number of custom formats you have!
-# To advoid this give them the permission -(yourpermission). Ex: -ultrachat.chat.1
+# To avoid this give them the permission -(yourpermission). Ex: -ultrachat.chat.1
 Custom_Chat:
-    #The Chat_Count number must represent how many custom chats you have.
-    Chat_Count: 5
-    #Each new custom chat must be a single number and all of them must go 1 - (what ever number you have last). There can't be any numbers skipped.
-    1:
-        #The permission node you want to give it. *Does not need to match up with the number above*
-        Permission: 'ultrachat.chat.1'
-        #The custom format in the chat. The message is added after the end of the string.
-        Format: '{normal_chat} &7>> '
-    2:
-        Permission: 'ultrachat.chat.2'
-        Format: '{normal_chat} &7>> '
-    3:
-        Permission: 'ultrachat.chat.3'
-        Format: '{normal_chat} &7>> '
-    4:
-        Permission: 'ultrachat.chat.4'
-        #If components are not enabled then you would put this.
-        Format: '%prefix% %player% %suffix%&7>> '
-    5:
-        Permission: 'ultrachat.chat.5'
-        Format: '%prefix% %player% %suffix%&7>> '
-    #For any player opped.
-    Op_Chat: 
-        #The format.
-        Format: '{normal_chat} &c>> '
+    permission_format:
+        'ultrachat.chat.example': '{normal_chat} &7>>'
+    #For any player oped.
+    Op_Chat: '{normal_chat} &c>> '
     #The default chat when a player does not have a custom one.
-    Default_Chat: 
-        Format: '{normal_chat} &7>>'
+    Default_Chat: '{normal_chat} &7>>'
 
 ##############################################
 #                Channels                    #

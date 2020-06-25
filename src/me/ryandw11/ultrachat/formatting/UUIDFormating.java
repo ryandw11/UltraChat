@@ -1,5 +1,6 @@
 package me.ryandw11.ultrachat.formatting;
 
+import java.util.Objects;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -31,7 +32,7 @@ private UltraChat plugin;
 		
 		OfflinePlayer op = Bukkit.getOfflinePlayer(ud);
 		
-		color = ChatColor.translateAlternateColorCodes('&', plugin.data.getString(ud + ".color"));
+		color =  Objects.requireNonNull(plugin.data.getString(ud + ".color"));
 		try {
 			prefix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerPrefix(world, op));
 			suffix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerSuffix(world, op));
@@ -40,11 +41,11 @@ private UltraChat plugin;
 			prefix = plugin.chat.getPlayerPrefix(world, op);
 			suffix = plugin.chat.getPlayerSuffix(world, op);
 		}
-		formatOp = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat.Op_Chat.Format"));
-		defaults = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Custom_Chat.Default_Chat.Format"));
-		global = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Global.format"));
-		this.world = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("World.format"));
-		local = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("Local.format"));
+		formatOp = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Op_Chat")));
+		defaults = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Default_Chat")));
+		global = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Global.format")));
+		this.world = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("World.format")));
+		local = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Local.format")));
 		this.op = op;
 		worldName = world;
 	}
@@ -88,8 +89,8 @@ private UltraChat plugin;
 		return defaults;
 	}
 	
-	public String getCustomFormat(int num) {
-		return plugin.getConfig().getString("Custom_Chat." + num + ".Format");
+	public String getCustomFormat(String name) {
+		return plugin.getConfig().getString("Custom_Chat.permission_format." + name);
 	}
 	
 	public OfflinePlayer getOfflinePlayer() {
@@ -105,13 +106,11 @@ private UltraChat plugin;
 		UltraChatAPI uapi = new UltraChatAPI();
 		if(uapi.getChatType() == ChatType.NORMAL) {
 			if(op.isOp()) return this.getOpFormat();
-			
-			int i = 1;
-			while (i <= plugin.getConfig().getInt("Custom_Chat.Chat_Count")) {
-				if (plugin.perms.playerHas(worldName, op, plugin.getConfig().getString("Custom_Chat." + i + ".Permission"))) {
-					return this.getCustomFormat(i);
+
+			for (String permission : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("Custom_Chat.permission_format")).getKeys(false)) {
+				if (plugin.perms.playerHas(worldName, op, plugin.getConfig().getString(permission))) {
+					return this.getCustomFormat(permission);
 				}
-				i++;
 			}
 			return this.getDefaultFormat();
 		}
