@@ -39,7 +39,8 @@ public enum Lang {
 	SJOIN_HIDE("sjoin-hide", "&bYour Join/Leave message will no longer be shown!"),
 	SJOIN_OTHER_SHOW("sjoin-other-show", "&b%p Join/Leave message will now be shown!"),
 	SJOIN_OTHER_HIDE("sjoin-other-hide", "&b%p Join/Leave message will no longer be shown!"),
-	HELP_PAGE_ERROR("help-page-error", "&cThere are only two help pages!");
+	HELP_PAGE_ERROR("help-page-error", "&cThere are only two help pages!"),
+	CHAT_COLOR_CHANGE("chat-color-change", "Your chat color has been changed!");
 
 	
 	 private String path;

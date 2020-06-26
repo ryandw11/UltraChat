@@ -17,6 +17,7 @@ chat_colors:
   '&c': 'default'
   '&d': 'default'
   '&e': 'default'
+  '&f': 'default'
 
 ###############################################
 #               Chat Color GUI                #

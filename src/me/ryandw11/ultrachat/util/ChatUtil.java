@@ -1,15 +1,7 @@
 package me.ryandw11.ultrachat.util;
 
 import me.ryandw11.ultrachat.UltraChat;
-import me.ryandw11.ultrachat.formatting.PlayerFormatting;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.tuple.Pair;
-import org.bukkit.entity.Player;
-
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
+import net.md_5.bungee.api.ChatColor;
 
 /**
  * This is a utility class to make chat easier.
@@ -26,18 +18,7 @@ public class ChatUtil {
         return UltraChat.plugin.chatColorUtil.translateChatColor(message);
     }
 
-    public static String translateColorCodes(Player p, String message){
-        return UltraChat.plugin.chatColorUtil.translateChatColor(p, message);
-    }
-
-    public static ComponentBuilder translateColorCodesChat(String message, PlayerFormatting pf){
-        Map<String, String> result = UltraChat.plugin.chatColorUtil.splitColors(message, pf);
-        ComponentBuilder builder = new ComponentBuilder();
-        for(Map.Entry<String, String> s : result.entrySet()){
-            TextComponent textComponent = new TextComponent(s.getKey());
-            textComponent.setColor(UltraChat.plugin.chatColorUtil.translateChatCode(s.getValue()));
-            builder.append(textComponent);
-        }
-        return builder;
+    public static ChatColor translateColorCode(String code){
+        return UltraChat.plugin.chatColorUtil.translateChatCode(code);
     }
 }

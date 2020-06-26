@@ -1,11 +1,8 @@
 package me.ryandw11.ultrachat.formatting;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
-import me.ryandw11.ultrachat.util.ChatUtil;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,7 +39,7 @@ public class NormalJSON implements Listener {
 
 		// Call the UltraChatEvent (This is an optional Event).
 		NormalProperties np = new NormalProperties(true);
-		UltraChatEvent event = new UltraChatEvent(p, e.getMessage(), new HashSet<Player>(e.getRecipients()), ChatType.NORMAL, np);
+		UltraChatEvent event = new UltraChatEvent(p, e.getMessage(), new HashSet<>(e.getRecipients()), ChatType.NORMAL, np);
 		Bukkit.getServer().getPluginManager().callEvent(event);
 		if (event.isCancelled()) {
 			return;
@@ -55,12 +52,12 @@ public class NormalJSON implements Listener {
 			String formats = pf.getOpFormat()
 					.replace("%prefix%", pf.getPrefix())
 					.replace("%suffix%", pf.getSuffix())
-					.replace("%player%", p.getDisplayName());
+					.replace("%player%", p.getDisplayName()) + pf.getColor();
 
 			for (Player pl : event.getRecipients()) {
 				ComponentBuilder cb = new ComponentBuilder("");
 				cb.append(JComponentManager.formatComponents(formats, p));
-				cb.append(ChatUtil.translateColorCodesChat(event.getMessage(), pf).create(), ComponentBuilder.FormatRetention.NONE);
+				cb.append(new TextComponent(TextComponent.fromLegacyText(pf.getColor() + plugin.chatColorUtil.translateChatColor(event.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 				pl.spigot().sendMessage(cb.create());
 			}
 			return;
@@ -77,7 +74,7 @@ public class NormalJSON implements Listener {
 				for (Player pl : event.getRecipients()) {
 					ComponentBuilder cb = new ComponentBuilder("");
 					cb.append(JComponentManager.formatComponents(formats, p));
-					cb.append(ChatUtil.translateColorCodesChat(event.getMessage(), pf).create(), ComponentBuilder.FormatRetention.NONE);
+					cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(event.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 					pl.spigot().sendMessage(cb.create());
 				}
 				return;
@@ -95,7 +92,7 @@ public class NormalJSON implements Listener {
 		for (Player pl : event.getRecipients()) {
 			ComponentBuilder cb = new ComponentBuilder("");
 			cb.append(JComponentManager.formatComponents(formats, p));
-			cb.append(ChatUtil.translateColorCodesChat(event.getMessage(), pf).create(), ComponentBuilder.FormatRetention.NONE);
+			cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(event.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 			pl.spigot().sendMessage(cb.create());
 		}
 	}

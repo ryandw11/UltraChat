@@ -1,9 +1,9 @@
 package me.ryandw11.ultrachat.formatting;
 
+import me.ryandw11.ultrachat.util.ChatUtil;
 import org.bukkit.entity.Player;
 
 import me.ryandw11.ultrachat.UltraChat;
-import me.ryandw11.ultrachat.api.Util;
 import net.md_5.bungee.api.ChatColor;
 
 import java.util.Objects;
@@ -63,7 +63,7 @@ public class PlayerFormatting {
 		return suffix;
 	}
 	public ChatColor getColor(){
-		return Util.getColorFromCode(color);
+		return ChatUtil.translateColorCode(color);
 	}
 	public String getOpFormat(){
 		return formatOp;

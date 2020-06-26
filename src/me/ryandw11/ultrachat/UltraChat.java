@@ -59,11 +59,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class UltraChat extends JavaPlugin {
 
-    /**
-     * TODO : I just finished allowing Hex colors in chat and removing the option for chat without JSON.
-     * Next on the list is to add in the color chat picker.
-     */
-
     public static UltraChat plugin;
     public Permission perms = null;
     public Chat chat = null;

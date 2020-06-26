@@ -1,8 +1,6 @@
 package me.ryandw11.ultrachat.api.managers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,6 +9,10 @@ import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.channels.ChannelBuilder;
 import me.ryandw11.ultrachat.api.channels.ChatChannel;
 
+/**
+ * This class handles the channels of the plugin.
+ * <p>Get the instance of this class from {@link me.ryandw11.ultrachat.api.UltraChatAPI#getChannelManager()}</p>
+ */
 public class ChannelManager {
 	private UltraChat plugin;
 	public ChannelManager() {
@@ -29,7 +31,7 @@ public class ChannelManager {
 	
 	/**
 	 * Grab the player's current channel.
-	 * @param player
+	 * @param player The player to get the channel from.
 	 * @return The player's current channel.
 	 */
 	public ChatChannel getPlayerChannel(Player player){
@@ -39,8 +41,8 @@ public class ChannelManager {
 	
 	/**
 	 * Grab an offline player's current channel.
-	 * @param player
-	 * @return
+	 * @param player The player to get the channel from.
+	 * @return That UUID's current channel.
 	 */
 	public ChatChannel getPlayerChannel(UUID player) {
 		ChannelBuilder cb = new ChannelBuilder(plugin.data.getString(player + ".channel"));
@@ -58,8 +60,8 @@ public class ChannelManager {
 	
 	/**
 	 * Set the player's channel.
-	 * @param player
-	 * @param channel
+	 * @param player The player to set.
+	 * @param channel The channel.
 	 */
 	public void setPlayerChannel(Player player, ChatChannel channel){
 		plugin.data.set(player.getUniqueId() + ".channel", channel.getName());
@@ -68,8 +70,8 @@ public class ChannelManager {
 	
 	/**
 	 * Set the player's channel.
-	 * @param player
-	 * @param channel
+	 * @param player The player to set.
+	 * @param channel The channel.
 	 */
 	public void setPlayerChannel(UUID player, ChatChannel channel) {
 		plugin.data.set(player + ".channel", channel.getName());
@@ -79,7 +81,7 @@ public class ChannelManager {
 	
 	/**
 	 * Set the default channel
-	 * @param channel
+	 * @param channel The channel.
 	 */
 	public void setDefaultChannel(ChatChannel channel){
 		plugin.getConfig().set("Default_Config", channel.getName());
@@ -88,7 +90,8 @@ public class ChannelManager {
 	
 	/**
 	 * If a given channel exists (In this instance if it is save in the files)
-	 * @param channel
+	 * @param channel The channel to check.
+	 * @return If the channel exists.
 	 */
 	public boolean channelExists(ChatChannel channel) {
 		return plugin.channel.contains(channel.getName());
@@ -96,8 +99,8 @@ public class ChannelManager {
 	
 	/**
 	 * If a given channel exists based upon the name.
-	 * @param name
-	 * @return
+	 * @param name The name of the channel to check
+	 * @return If the channel exists.
 	 */
 	public boolean channelExists(String name) {
 		return plugin.channel.contains(name);
@@ -105,8 +108,8 @@ public class ChannelManager {
 	
 	/**
 	 * Get all online players in a given channel.
-	 * @param channel
-	 * @return
+	 * @param channel The channel to get the players from.
+	 * @return The list of players. (Unmodifiable)
 	 */
 	public List<Player> getPlayersInChannel(ChatChannel channel){
 		List<Player> output = new ArrayList<>();
@@ -115,23 +118,23 @@ public class ChannelManager {
 				output.add(p);
 			}
 		}
-		return output;
+		return Collections.unmodifiableList(output);
 	}
 	
 	/**
 	 * Get all players in a channel online or offline.
-	 * @param channel
-	 * @return
+	 * @param channel The channel to get the UUIDs from.
+	 * @return The list of UUIDs. (Unmodifiable)
 	 */
 	public List<UUID> getAllPlayersInChannel(ChatChannel channel){
 		List<UUID> output = new ArrayList<>();
-		for(String s : plugin.data.getConfigurationSection("").getKeys(false)) {
+		for(String s : Objects.requireNonNull(plugin.data.getConfigurationSection("")).getKeys(false)) {
 			UUID ud = UUID.fromString(s);
 			if(this.getPlayerChannel(ud).getName().equals(channel.getName())) {
 				output.add(ud);
 			}
 		}
-		return output;
+		return Collections.unmodifiableList(output);
 	}
 	
 }

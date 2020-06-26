@@ -34,12 +34,11 @@ public class World implements CommandExecutor {
 			p.sendMessage(Lang.NO_PERM.toString());
 			return true;
 		}
-		UltraChatAPI uapi = new UltraChatAPI();
 		PlayerFormatting pf = new PlayerFormatting(p);
 
-		RangeProperties rp = new RangeProperties(uapi.isComponents(), RangeType.WORLD);
+		RangeProperties rp = new RangeProperties(true, RangeType.WORLD);
 		UltraChatEvent uce = new UltraChatEvent(p, this.getMessage(args, p),
-				new HashSet<Player>(p.getWorld().getPlayers()), ChatType.RANGE, rp);
+				new HashSet<>(p.getWorld().getPlayers()), ChatType.RANGE, rp);
 		Bukkit.getScheduler().runTaskAsynchronously(UltraChat.plugin, () -> {
 			Bukkit.getServer().getPluginManager().callEvent(uce);
 

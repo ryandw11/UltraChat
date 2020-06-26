@@ -59,7 +59,7 @@ public class ChannelJSON implements Listener {
 
 						ComponentBuilder cb = new ComponentBuilder("");
 						cb.append(JComponentManager.formatComponents(format, p));
-						cb.append(ChatUtil.translateColorCodesChat(uce.getMessage(), pf).create(), ComponentBuilder.FormatRetention.NONE);
+						cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(uce.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 						pl.spigot().sendMessage(cb.create());
 					}
 				}
@@ -80,7 +80,7 @@ public class ChannelJSON implements Listener {
 
 					ComponentBuilder cb = new ComponentBuilder("");
 					cb.append(JComponentManager.formatComponents(formats, p));
-					cb.append(ChatUtil.translateColorCodesChat(uce.getMessage(), pf).create(), ComponentBuilder.FormatRetention.NONE);
+					cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(uce.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 					pl.spigot().sendMessage(cb.create());
 				}
 		}

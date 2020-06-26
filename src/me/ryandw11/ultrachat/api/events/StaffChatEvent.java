@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * This event is called when the staff chat is used.
+ */
 public class StaffChatEvent extends Event {
 
 	private static final HandlerList handlers = new HandlerList();

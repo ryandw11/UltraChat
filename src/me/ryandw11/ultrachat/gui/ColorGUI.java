@@ -7,5 +7,5 @@ import org.bukkit.entity.Player;
  *
  */
 public interface ColorGUI {
-	void openGUI(Player p);
+	void openGUI(Player p, int page);
 }

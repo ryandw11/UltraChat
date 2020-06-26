@@ -250,7 +250,7 @@ public class ChatCommand implements CommandExecutor {
 				}
 				else if(args.length == 1 && args[0].equalsIgnoreCase("color")){
 					if(p.hasPermission("ultrachat.color")){
-						plugin.getColorGUI().openGUI(p.getPlayer());
+						plugin.getColorGUI().openGUI(p.getPlayer(), 1);
 					}
 					else{
 						p.sendMessage(Lang.NO_PERM.toString());

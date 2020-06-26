@@ -29,7 +29,7 @@ public class ColorGUI_1_15_R1 implements CommandExecutor, Listener, ColorGUI{
 	public ColorGUI_1_15_R1(){
 		plugin = UltraChat.plugin;
 	}
-	public void openGUI(Player p){
+	public void openGUI(Player p, int page){
 		Inventory i = Bukkit.createInventory(null, InventoryType.CHEST, Lang.COLOR_GUI.toString());
 		
 		ItemStack darkblueitem = new ItemStack(Material.BLUE_WOOL);
@@ -166,7 +166,7 @@ public class ColorGUI_1_15_R1 implements CommandExecutor, Listener, ColorGUI{
 		}
 		Player p = (Player) sender;
 		if(p.hasPermission("ultrachat.color")){
-			openGUI(p.getPlayer());
+			openGUI(p.getPlayer(), 0);
 		}
 		else{
 			p.sendMessage(Lang.NO_PERM.toString());

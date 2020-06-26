@@ -3,13 +3,13 @@ package me.ryandw11.ultrachat.formatting;
 import java.util.Objects;
 import java.util.UUID;
 
+import me.ryandw11.ultrachat.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.ChatType;
 import me.ryandw11.ultrachat.api.UltraChatAPI;
-import me.ryandw11.ultrachat.api.Util;
 import me.ryandw11.ultrachat.api.channels.ChatChannel;
 import net.md_5.bungee.api.ChatColor;
 
@@ -80,7 +80,7 @@ private UltraChat plugin;
 		return suffix;
 	}
 	public ChatColor getColor(){
-		return Util.getColorFromCode(color);
+		return ChatUtil.translateColorCode(color);
 	}
 	public String getOpFormat(){
 		return formatOp;
