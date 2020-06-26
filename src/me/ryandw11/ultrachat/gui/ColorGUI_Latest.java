@@ -185,7 +185,7 @@ public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
 		ItemStack item = e.getCurrentItem();
 		if(!e.getInventory().contains(item)) return;
 
-		if(item.equals(getBottomStack()) || item.equals(getCurrentStack(page))) return;
+		if(item.equals(getBottomStack()) || item.equals(getCurrentStack(page)) || item.equals(getNoPermItem())) return;
 		if(item.equals(getNextStack(page))){
 			p.closeInventory();
 			openGUI(p, page+1);

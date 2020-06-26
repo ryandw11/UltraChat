@@ -18,6 +18,7 @@ chat_colors:
   '&d': 'default'
   '&e': 'default'
   '&f': 'default'
+  '&g': '{#11f014}'
 
 ###############################################
 #               Chat Color GUI                #
@@ -87,3 +88,7 @@ color_gui:
     color: '&0'
     item: 'BLACK_WOOL'
     permission: 'ultrachat.chatcolor.black'
+  'Pumpkin Orange':
+    color: '{#f59b14}'
+    item: 'BLACK_WOOL'
+    permission: 'ultrachat.chatcolor.pumpkinorange'

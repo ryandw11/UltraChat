@@ -83,7 +83,7 @@ public class ChannelBuilder {
 
 	/**
 	 * Set if the channel is always appear
-	 * @param alwaysAppear
+	 * @param alwaysAppear If the channel should always appear.
 	 * @return The builder
 	 */
 	public ChannelBuilder setAlwaysAppear(boolean alwaysAppear) {
@@ -95,15 +95,15 @@ public class ChannelBuilder {
 	 * Build the channel
 	 * @return The channel. Note: If the channel name is already used it will return the existing one.
 	 */
-	@SuppressWarnings("unchecked")
 	public ChatChannel build() {
 		if(UltraChat.plugin.channel.contains(this.name)) {
 			ConfigurationSection cs = UltraChat.plugin.channel.getConfigurationSection(this.name);
+			assert cs != null;
 			this.setPrefix(cs.getString("prefix"));
 			this.setPermission(cs.getString("permission"));
 			this.setAlwaysAppear(cs.getBoolean("always_appear"));
 			this.setFormat(cs.getString("format"));
-			this.setJson((ArrayList<String>) cs.get("JSON"));
+			this.setJson(cs.getStringList("JSON"));
 		}
 	    return new ChatChannel(this);
 	}

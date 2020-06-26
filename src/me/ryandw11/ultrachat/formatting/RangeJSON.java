@@ -21,6 +21,7 @@ import me.ryandw11.ultrachat.api.events.properties.RangeType;
 import me.ryandw11.ultrachat.api.managers.JComponentManager;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class RangeJSON implements Listener {
 
@@ -35,29 +36,33 @@ public class RangeJSON implements Listener {
 		Player p = e.getPlayer();
 		PlayerFormatting pf = new PlayerFormatting(p);
 		e.getRecipients().removeAll(Bukkit.getOnlinePlayers());
-		e.getRecipients().addAll(getNearbyPlayers(p));
-		e.getRecipients().add(p);
-		
-		RangeProperties rp = new RangeProperties(true, RangeType.LOCAL);
+		Bukkit.getScheduler().runTask(plugin, () -> {
+			e.getRecipients().addAll(getNearbyPlayers(p));
+			e.getRecipients().add(p);
 
-		UltraChatEvent uce = new UltraChatEvent(p, e.getMessage(), new HashSet<>(e.getRecipients()), ChatType.RANGE, rp);
-		Bukkit.getServer().getPluginManager().callEvent(uce);
-		e.getRecipients().clear();
-		if (!uce.isCancelled()) {
-			for (Player pl : uce.getRecipients()) {
-				
-				String formats = pf.getLocal()
-						.replace("%player%", p.getDisplayName())
-						.replace("%prefix%", pf.getPrefix())
-						.replace("%suffix%", pf.getSuffix())
-						+ pf.getColor();
+			RangeProperties rp = new RangeProperties(true, RangeType.LOCAL);
 
-				ComponentBuilder cb = new ComponentBuilder("");
-				cb.append(JComponentManager.formatComponents(formats, p));
-				cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(uce.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
-				pl.spigot().sendMessage(cb.create());
-			}
-		}
+			UltraChatEvent uce = new UltraChatEvent(p, e.getMessage(), new HashSet<>(e.getRecipients()), ChatType.RANGE, rp);
+			Bukkit.getScheduler().runTaskAsynchronously(plugin, ()->{
+				Bukkit.getServer().getPluginManager().callEvent(uce);
+				e.getRecipients().clear();
+				if (!uce.isCancelled()) {
+					for (Player pl : uce.getRecipients()) {
+
+						String formats = pf.getLocal()
+								.replace("%player%", p.getDisplayName())
+								.replace("%prefix%", pf.getPrefix())
+								.replace("%suffix%", pf.getSuffix())
+								+ pf.getColor();
+
+						ComponentBuilder cb = new ComponentBuilder("");
+						cb.append(JComponentManager.formatComponents(formats, p));
+						cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(uce.getMessage(), p), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
+						pl.spigot().sendMessage(cb.create());
+					}
+				}
+			});
+		});
 	}
 
 	private ArrayList<Player> getNearbyPlayers(Player pl) {

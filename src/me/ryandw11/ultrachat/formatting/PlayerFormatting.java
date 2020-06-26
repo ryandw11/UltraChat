@@ -24,13 +24,13 @@ public class PlayerFormatting {
 		plugin = UltraChat.plugin;
 		
 		color =  plugin.data.getString(p.getUniqueId() + ".color");
-		prefix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerPrefix(p));
-		suffix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerSuffix(p));
-		formatOp = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Op_Chat"))), p);
-		defaults = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Default_Chat"))), p);
-		global = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Global.format"))), p);
-		world = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("World.format"))), p);
-		local = plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Local.format"))), p);
+		prefix = ChatUtil.translateColorCodes( plugin.chat.getPlayerPrefix(p));
+		suffix = ChatUtil.translateColorCodes( plugin.chat.getPlayerSuffix(p));
+		formatOp = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes(Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Op_Chat"))), p);
+		defaults = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Default_Chat"))), p);
+		global = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("Global.format"))), p);
+		world = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("World.format"))), p);
+		local = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("Local.format"))), p);
 		this.p = p;
 	}
 	
@@ -72,8 +72,8 @@ public class PlayerFormatting {
 		return defaults;
 	}
 
-	public String getCustomFormat(String name) {
-		return plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.permission_format." + name))), p);
+	public String getCustomFormat(String key) {
+		return plugin.papi.translatePlaceholders(ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.permission_format." + key + ".format"))), p);
 	}
 	
 }

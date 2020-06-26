@@ -54,8 +54,7 @@ public class Global implements CommandExecutor {
 			
 			ComponentBuilder cb = new ComponentBuilder("");
 			cb.append(JComponentManager.formatComponents(form, p));
-			TextComponent ct = new TextComponent(uce.getMessage());
-			cb.append(ct);
+			cb.append(new TextComponent(TextComponent.fromLegacyText(UltraChat.plugin.chatColorUtil.translateChatColor(uce.getMessage(), p), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 			
 			for (Player pl : uce.getRecipients()) {
 				pl.spigot().sendMessage(cb.create());
@@ -65,13 +64,11 @@ public class Global implements CommandExecutor {
 	}
 
 	private String getMessage(String[] args, Player p) {
-		String end = "";
+		StringBuilder end = new StringBuilder();
 		for (String s : args) {
-			end += s + " ";
+			end.append(s).append(" ");
 		}
-		if (p.hasPermission("ultrachat.color"))
-			return ChatColor.translateAlternateColorCodes('&', end);
-		return end;
+		return end.toString();
 	}
 
 }

@@ -28,13 +28,13 @@ public class StaffChatToggle implements CommandExecutor {
 		Player p = (Player) sender;
 		if(p.hasPermission("ultrachat.staffchat.toggle")){
 				
-			if(plugin.stafftoggle.contains(p.getUniqueId())){
-				plugin.stafftoggle.remove(p.getUniqueId());
+			if(plugin.staffToggle.contains(p.getUniqueId())){
+				plugin.staffToggle.remove(p.getUniqueId());
 				p.sendMessage(Lang.STAFF_CHAT_ON.toString());
 					
 			}
 			else{
-				plugin.stafftoggle.add(p.getUniqueId());
+				plugin.staffToggle.add(p.getUniqueId());
 				p.sendMessage(Lang.STAFF_CHAT_OFF.toString());
 			}
 		}//end of perm check

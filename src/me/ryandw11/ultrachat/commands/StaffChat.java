@@ -43,7 +43,7 @@ public class StaffChat implements CommandExecutor {
 				
 				for(Player p1 : Bukkit.getOnlinePlayers()){
 					if(p1.hasPermission("ultrachat.staffchat")){
-						if(!plugin.stafftoggle.contains(p1.getUniqueId())){
+						if(!plugin.staffToggle.contains(p1.getUniqueId())){
 							if (p instanceof Player)
 								p1.spigot().sendMessage(JComponentManager.formatComponents(Lang.STAFF_CHAT_FORMAT.toString().replace("%p", p.getName()).replace("%s", message), (Player) p));
 							else

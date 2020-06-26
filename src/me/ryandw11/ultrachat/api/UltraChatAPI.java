@@ -49,7 +49,7 @@ public class UltraChatAPI{
 	 * @return chat type
 	 */
 	public ChatType getChatType(){
-		return plugin.md;
+		return plugin.chatType;
 	}
 	
 	
@@ -121,7 +121,7 @@ public class UltraChatAPI{
 	 * @return The value of the config.
 	 */
 	public ChatType getFormattingType(){
-		return plugin.md;
+		return plugin.chatType;
 	}
 
 	/**

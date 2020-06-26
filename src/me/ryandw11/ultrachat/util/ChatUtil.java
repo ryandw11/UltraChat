@@ -2,6 +2,7 @@ package me.ryandw11.ultrachat.util;
 
 import me.ryandw11.ultrachat.UltraChat;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
 /**
  * This is a utility class to make chat easier.
@@ -16,6 +17,10 @@ public class ChatUtil {
      */
     public static String translateColorCodes(String message){
         return UltraChat.plugin.chatColorUtil.translateChatColor(message);
+    }
+
+    public static String translateColorCodes(String message, Player p){
+        return UltraChat.plugin.chatColorUtil.translateChatColor(message, p);
     }
 
     public static ChatColor translateColorCode(String code){

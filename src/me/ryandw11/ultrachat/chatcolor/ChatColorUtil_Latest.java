@@ -2,6 +2,7 @@ package me.ryandw11.ultrachat.chatcolor;
 
 import me.ryandw11.ultrachat.UltraChat;
 import net.md_5.bungee.api.ChatColor;
+import org.bukkit.entity.Player;
 
 public class ChatColorUtil_Latest implements ChatColorUtils {
 
@@ -14,6 +15,16 @@ public class ChatColorUtil_Latest implements ChatColorUtils {
     public String translateChatColor(String message) {
         String finalMessage = translateHexColor(message);
         finalMessage = plugin.chatColorManager.translateMapColors(finalMessage);
+        return finalMessage;
+    }
+
+    @Override
+    public String translateChatColor(String message, Player p) {
+        String finalMessage = message;
+        if(p.hasPermission("ultrachat.chat.hex"))
+            finalMessage = translateHexColor(message);
+        if(p.hasPermission("ultrachat.chat.color"))
+            finalMessage = plugin.chatColorManager.translateMapColors(finalMessage);
         return finalMessage;
     }
 

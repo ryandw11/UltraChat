@@ -63,9 +63,11 @@ public class NormalJSON implements Listener {
 			return;
 		}
 		// If the player is not op
-		for (String permission : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("Custom_Chat.permission_format")).getKeys(false)) {
+		for (String key : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("Custom_Chat.permission_format")).getKeys(false)) {
+			String permission = plugin.getConfig().getString("Custom_Chat.permission_format." + key + ".permission");
+			assert permission != null;
 			if (p.hasPermission(permission)) {
-				String formats = pf.getCustomFormat(permission)
+				String formats = pf.getCustomFormat(key)
 						.replace("%prefix%", pf.getPrefix())
 						.replace("%suffix%", pf.getSuffix())
 						.replace("%player%", p.getDisplayName())
@@ -74,7 +76,7 @@ public class NormalJSON implements Listener {
 				for (Player pl : event.getRecipients()) {
 					ComponentBuilder cb = new ComponentBuilder("");
 					cb.append(JComponentManager.formatComponents(formats, p));
-					cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(event.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
+					cb.append(new TextComponent(TextComponent.fromLegacyText(pf.getColor() + plugin.chatColorUtil.translateChatColor(event.getMessage(), p), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 					pl.spigot().sendMessage(cb.create());
 				}
 				return;
@@ -92,7 +94,7 @@ public class NormalJSON implements Listener {
 		for (Player pl : event.getRecipients()) {
 			ComponentBuilder cb = new ComponentBuilder("");
 			cb.append(JComponentManager.formatComponents(formats, p));
-			cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(event.getMessage()), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
+			cb.append(new TextComponent(TextComponent.fromLegacyText(pf.getColor() + plugin.chatColorUtil.translateChatColor(event.getMessage(), p), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 			pl.spigot().sendMessage(cb.create());
 		}
 	}

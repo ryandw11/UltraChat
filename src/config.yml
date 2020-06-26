@@ -87,10 +87,6 @@ chat_format: 'normal'
 #The default color that opped players chat in. Do &r for none.
 Op_Chat_Color: '&c'
 
-#Console Chat Log: (JSON chat only!)
-#With json on the chat no longer prints to the console. This option fixes that issue! Set to true if you want it enabled!
-console_log: false
-
 #Variables: %prefix% - Gives you the players prefix. %suffix% - gives you the player suffix!
 #You can use PlaceHolderAPI here! Check out the placeholders here: https://www.spigotmc.org/wiki/placeholderapi-placeholders/
 #You can have unlimited custom chat formats.

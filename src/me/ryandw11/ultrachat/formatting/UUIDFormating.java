@@ -34,18 +34,18 @@ private UltraChat plugin;
 		
 		color =  Objects.requireNonNull(plugin.data.getString(ud + ".color"));
 		try {
-			prefix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerPrefix(world, op));
-			suffix = ChatColor.translateAlternateColorCodes('&', plugin.chat.getPlayerSuffix(world, op));
+			prefix = ChatUtil.translateColorCodes( plugin.chat.getPlayerPrefix(world, op));
+			suffix = ChatUtil.translateColorCodes( plugin.chat.getPlayerSuffix(world, op));
 		}
 		catch(NullPointerException ex) {
 			prefix = plugin.chat.getPlayerPrefix(world, op);
 			suffix = plugin.chat.getPlayerSuffix(world, op);
 		}
-		formatOp = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Op_Chat")));
-		defaults = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Default_Chat")));
-		global = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Global.format")));
-		this.world = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("World.format")));
-		local = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.getConfig().getString("Local.format")));
+		formatOp = ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Op_Chat")));
+		defaults = ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("Custom_Chat.Default_Chat")));
+		global = ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("Global.format")));
+		this.world = ChatUtil.translateColorCodes( Objects.requireNonNull(plugin.getConfig().getString("World.format")));
+		local = ChatUtil.translateColorCodes(Objects.requireNonNull(plugin.getConfig().getString("Local.format")));
 		this.op = op;
 		worldName = world;
 	}
@@ -89,8 +89,8 @@ private UltraChat plugin;
 		return defaults;
 	}
 	
-	public String getCustomFormat(String name) {
-		return plugin.getConfig().getString("Custom_Chat.permission_format." + name);
+	public String getCustomFormat(String key) {
+		return plugin.getConfig().getString("Custom_Chat.permission_format." + key + ".format");
 	}
 	
 	public OfflinePlayer getOfflinePlayer() {
@@ -107,9 +107,11 @@ private UltraChat plugin;
 		if(uapi.getChatType() == ChatType.NORMAL) {
 			if(op.isOp()) return this.getOpFormat();
 
-			for (String permission : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("Custom_Chat.permission_format")).getKeys(false)) {
+			for (String key : Objects.requireNonNull(plugin.getConfig().getConfigurationSection("Custom_Chat.permission_format")).getKeys(false)) {
+				String permission = plugin.getConfig().getString("Custom_Chat.permission_format." + key + ".permission");
+				assert permission != null;
 				if (plugin.perms.playerHas(worldName, op, plugin.getConfig().getString(permission))) {
-					return this.getCustomFormat(permission);
+					return this.getCustomFormat(key);
 				}
 			}
 			return this.getDefaultFormat();
