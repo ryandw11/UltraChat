@@ -14,9 +14,9 @@ import net.md_5.bungee.api.chat.TextComponent;
  */
 public class MessageBuilder {
 	
-	private ComponentBuilder compon;
+	private ComponentBuilder component;
 	public MessageBuilder() {
-		compon = new ComponentBuilder("");
+		component = new ComponentBuilder("");
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public class MessageBuilder {
 	 * @return The MessageBuilder to chain.
 	 */
 	public MessageBuilder addJSON(JSONChatBuilder json) {
-		compon.append(json.build(), FormatRetention.FORMATTING);
+		component.append(json.build(), FormatRetention.NONE);
 		return this;
 	}
 	
@@ -36,7 +36,7 @@ public class MessageBuilder {
 	 */
 	public MessageBuilder addString(String s) {
 		TextComponent tc = new TextComponent(s);
-		compon.append(tc, FormatRetention.FORMATTING);
+		component.append(tc, FormatRetention.NONE);
 		return this;
 	}
 	
@@ -46,11 +46,11 @@ public class MessageBuilder {
 	 * @return The Buider to chain
 	 */
 	public MessageBuilder addBaseComponent(BaseComponent[] bc) {
-		compon.append(bc, FormatRetention.FORMATTING);
+		component.append(bc, FormatRetention.NONE);
 		return this;
 	}
 	
 	public BaseComponent[] build() {
-		return this.compon.create();
+		return this.component.create();
 	}
 }

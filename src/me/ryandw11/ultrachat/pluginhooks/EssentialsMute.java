@@ -15,7 +15,8 @@ public class EssentialsMute implements Listener{
 	public void jsonChat(UltraChatEvent e){	
 		Player p = e.getPlayer();
 		Essentials ess = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
-		if(ess.getUser(p).isMuted()){	
+		assert ess != null;
+		if(ess.getUser(p).isMuted()){
 			e.setCancelled(true);
 		}
 	}

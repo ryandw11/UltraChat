@@ -39,14 +39,14 @@ public class SpyCommand implements CommandExecutor {
 					
 			}
 			else{
-				if(plugin.spytoggle.contains(p.getUniqueId())){
+				if(plugin.spyToggle.contains(p.getUniqueId())){
 					p.sendMessage(Lang.CMD_SPY_OFF.toString());
-					plugin.spytoggle.remove(p.getUniqueId());
+					plugin.spyToggle.remove(p.getUniqueId());
 					plugin.data.set(p.getUniqueId().toString() + ".spy", false);
 					plugin.saveFile();
 				}
 				else{
-					plugin.spytoggle.add(p.getUniqueId());
+					plugin.spyToggle.add(p.getUniqueId());
 					p.sendMessage(Lang.CMD_SPY_ON.toString()); 
 					plugin.data.set(p.getUniqueId().toString() + ".spy", true);
 					plugin.saveFile();
@@ -58,14 +58,14 @@ public class SpyCommand implements CommandExecutor {
 		else if(args.length == 1){
 			if(p.hasPermission("ultrachat.spy.others")){
 				Player pl = (Player) Bukkit.getServer().getPlayer(args[0]);
-				if(plugin.spytoggle.contains(pl.getUniqueId())){
-					plugin.spytoggle.remove(pl.getUniqueId());
+				if(plugin.spyToggle.contains(pl.getUniqueId())){
+					plugin.spyToggle.remove(pl.getUniqueId());
 					p.sendMessage(Lang.OTH_CMD_SPY_OFF.toString().replace("%p", args[0]));
 					plugin.data.set(pl.getUniqueId().toString() + ".spy", false);
 					plugin.saveFile();
 				}
 				else{
-					plugin.spytoggle.add(pl.getUniqueId());
+					plugin.spyToggle.add(pl.getUniqueId());
 					p.sendMessage(Lang.OTH_CMD_SPY_ON.toString().replace("%p", args[0]));
 					plugin.data.set(pl.getUniqueId().toString() + ".spy", true);
 					plugin.saveFile();

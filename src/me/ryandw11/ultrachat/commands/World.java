@@ -2,6 +2,7 @@ package me.ryandw11.ultrachat.commands;
 
 import java.util.HashSet;
 
+import com.sun.istack.internal.NotNull;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -12,7 +13,6 @@ import org.bukkit.entity.Player;
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.ChatType;
 import me.ryandw11.ultrachat.api.Lang;
-import me.ryandw11.ultrachat.api.UltraChatAPI;
 import me.ryandw11.ultrachat.api.events.UltraChatEvent;
 import me.ryandw11.ultrachat.api.events.properties.RangeProperties;
 import me.ryandw11.ultrachat.api.events.properties.RangeType;
@@ -24,7 +24,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class World implements CommandExecutor {
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
 		if (!(sender instanceof Player)) {
 			sender.sendMessage(ChatColor.RED + "This command is for players only!");
 			return true;
@@ -34,12 +34,11 @@ public class World implements CommandExecutor {
 			p.sendMessage(Lang.NO_PERM.toString());
 			return true;
 		}
-		UltraChatAPI uapi = new UltraChatAPI();
 		PlayerFormatting pf = new PlayerFormatting(p);
 
-		RangeProperties rp = new RangeProperties(uapi.isComponents(), RangeType.WORLD);
+		RangeProperties rp = new RangeProperties(true, RangeType.WORLD);
 		UltraChatEvent uce = new UltraChatEvent(p, this.getMessage(args, p),
-				new HashSet<Player>(p.getWorld().getPlayers()), ChatType.RANGE, rp);
+				new HashSet<>(p.getWorld().getPlayers()), ChatType.RANGE, rp);
 		Bukkit.getScheduler().runTaskAsynchronously(UltraChat.plugin, () -> {
 			Bukkit.getServer().getPluginManager().callEvent(uce);
 
@@ -52,8 +51,7 @@ public class World implements CommandExecutor {
 					.replace("%suffix%", pf.getSuffix()) + pf.getColor();
 			ComponentBuilder cb = new ComponentBuilder("");
 			cb.append(JComponentManager.formatComponents(form, p));
-			TextComponent ct = new TextComponent(uce.getMessage());
-			cb.append(ct);
+			cb.append(new TextComponent(TextComponent.fromLegacyText(pf.getColor() + UltraChat.plugin.chatColorUtil.translateChatColor(uce.getMessage(), p), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
 			
 			for (Player pl : uce.getRecipients()) {
 				pl.spigot().sendMessage(cb.create());
@@ -64,13 +62,11 @@ public class World implements CommandExecutor {
 	}
 
 	private String getMessage(String[] args, Player p) {
-		String end = "";
+		StringBuilder end = new StringBuilder();
 		for (String s : args) {
-			end += s + " ";
+			end.append(s).append(" ");
 		}
-		if (p.hasPermission("ultrachat.color"))
-			return ChatColor.translateAlternateColorCodes('&', end);
-		return end;
+		return end.toString();
 	}
 
 }

@@ -3,11 +3,13 @@ package me.ryandw11.ultrachat.formatting;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import me.ryandw11.ultrachat.util.ChatUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -19,6 +21,7 @@ import me.ryandw11.ultrachat.api.events.properties.RangeType;
 import me.ryandw11.ultrachat.api.managers.JComponentManager;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class RangeJSON implements Listener {
 
@@ -28,38 +31,38 @@ public class RangeJSON implements Listener {
 		this.plugin = UltraChat.plugin;
 	}
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onChat(AsyncPlayerChatEvent e) {
 		Player p = e.getPlayer();
 		PlayerFormatting pf = new PlayerFormatting(p);
-		if (p.hasPermission("ultrachat.chat.color")) {
-			e.setMessage(ChatColor.translateAlternateColorCodes('&', e.getMessage()));
-		}
 		e.getRecipients().removeAll(Bukkit.getOnlinePlayers());
-		e.getRecipients().addAll(getNearbyPlayers(p));
-		e.getRecipients().add(p);
-		e.setCancelled(true);
-		
-		RangeProperties rp = new RangeProperties(true, RangeType.LOCAL);
+		Bukkit.getScheduler().runTask(plugin, () -> {
+			e.getRecipients().addAll(getNearbyPlayers(p));
+			e.getRecipients().add(p);
 
-		UltraChatEvent uce = new UltraChatEvent(p, e.getMessage(), new HashSet<Player>(e.getRecipients()), ChatType.RANGE, rp);
-		Bukkit.getServer().getPluginManager().callEvent(uce);
-		if (!uce.isCancelled()) {
-			for (Player pl : uce.getRecipients()) {
-				
-				String form = pf.getLocal()
-						.replace("%player%", p.getDisplayName())
-						.replace("%prefix%", pf.getPrefix())
-						.replace("%suffix%", pf.getSuffix())
-						+ pf.getColor();
-				
-				ComponentBuilder cb = new ComponentBuilder("");
-				cb.append(JComponentManager.formatComponents(form, p));
-				TextComponent tc = new TextComponent(uce.getMessage());
-				cb.append(tc);
-				pl.spigot().sendMessage(cb.create());
-			}
-		}
+			RangeProperties rp = new RangeProperties(true, RangeType.LOCAL);
+
+			UltraChatEvent uce = new UltraChatEvent(p, e.getMessage(), new HashSet<>(e.getRecipients()), ChatType.RANGE, rp);
+			Bukkit.getScheduler().runTaskAsynchronously(plugin, ()->{
+				Bukkit.getServer().getPluginManager().callEvent(uce);
+				e.getRecipients().clear();
+				if (!uce.isCancelled()) {
+					for (Player pl : uce.getRecipients()) {
+
+						String formats = pf.getLocal()
+								.replace("%player%", p.getDisplayName())
+								.replace("%prefix%", pf.getPrefix())
+								.replace("%suffix%", pf.getSuffix())
+								+ pf.getColor();
+
+						ComponentBuilder cb = new ComponentBuilder("");
+						cb.append(JComponentManager.formatComponents(formats, p));
+						cb.append(new TextComponent(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(uce.getMessage(), p), pf.getColor())), ComponentBuilder.FormatRetention.NONE);
+						pl.spigot().sendMessage(cb.create());
+					}
+				}
+			});
+		});
 	}
 
 	private ArrayList<Player> getNearbyPlayers(Player pl) {

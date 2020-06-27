@@ -1,10 +1,10 @@
 package me.ryandw11.ultrachat.api;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+import me.ryandw11.ultrachat.api.managers.ChannelManager;
+import me.ryandw11.ultrachat.chatcolor.ChatColorManager;
+import me.ryandw11.ultrachat.chatcolor.ChatColorUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,7 +16,7 @@ import me.ryandw11.ultrachat.formatting.PlayerFormatting;
 /**
  * UltraChatAPI
  * @author Ryandw11
- * @version 2.4
+ * @version 2.5
  */
 
 public class UltraChatAPI{
@@ -25,31 +25,11 @@ public class UltraChatAPI{
 		this.plugin = UltraChat.plugin;
 	}
 	
-	
-	/**
-	 * Get a format's json.
-	 * @param number
-	 * @return Json array
-	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getChatFormatJson(String number){
-		return (ArrayList<String>) plugin.getConfig().get("Custom_Chat." + number + ".JSON");
-	}
-	/**
-	 * Set a format's json.
-	 * @param json
-	 * @param number
-	 * 
-	 */
-	public void setChatFormatJson(ArrayList<String> json, String number){
-		plugin.getConfig().set("Custom_Chat." + number + ".JSON", json);
-		plugin.saveConfig();
-	}
-	
 	/**
 	 * Get the current channel of a player.
 	 * @param player The uuid of the player you want to get.
 	 * @return The chat channel.
+	 * @deprecated Use the channel manager instead.
 	 */
 	public ChatChannel getPlayerCurrentChannel(UUID player) {
 		return new ChannelBuilder(plugin.data.getString(player + ".channel")).build();
@@ -69,7 +49,7 @@ public class UltraChatAPI{
 	 * @return chat type
 	 */
 	public ChatType getChatType(){
-		return plugin.md;
+		return plugin.chatType;
 	}
 	
 	
@@ -91,114 +71,88 @@ public class UltraChatAPI{
 	 * Grab the player's formatting.
 	 * @param p The player.
 	 * @return The player's formatting.
+	 * @deprecated Construct the {@link PlayerFormatting} class yourself.
 	 */
 	public PlayerFormatting getPlayerFormatting(Player p){
-		PlayerFormatting pf = new PlayerFormatting(p);
-		return pf;
+		return new PlayerFormatting(p);
 	}
+
 	/**
-	 * Get a chat format.
-	 * @param number
-	 * @return Chat format.
-	 */
-	public String getFormat(String number){
-		return plugin.getConfig().getString("Custom_Chat." + number + ".Format");
-	}
-	/**
-	 * Get the op format.
-	 * @return op format.
-	 */
-	public String getOpFormat(){
-		return plugin.getConfig().getString("Custom_Chat.Op_Chat.Format");
-	}
-	/**
-	 * Get the default format.
-	 * @return op format.
-	 */
-	public String getDefaultFormat(){
-		return plugin.getConfig().getString("Custom_Chat.Default.Format");
-	}
-	/**
-	 * Get the permission of a chat group.
-	 * @param number
-	 * @return permission
-	 */
-	public String getPermission(String number){
-		return plugin.getConfig().getString("Custom_Chat." + number + ".Permission");
-	}
-	/**
-	 * Get the number of formats
-	 * @return Chat Count
-	 */
-	public int getChatCount(){
-		return plugin.getConfig().getInt("Custom_Chat.Chat_Count");
-	}
-	/**
-	 * Get a player's color. Example: &4
-	 * @param player
+	 * Get a player's color.
+	 * <p>This will return a string Such as &4 or {#FFFFFF}.</p>
+	 * <p>Note: The colors interpreted are from the chatcolor.yml file. To also get color data from the use {@link me.ryandw11.ultrachat.util.ChatUtil#translateColorCode(String)}</p>
+	 * @param player The player to get the color for
 	 * @return color code.
 	 */
 	public String getPlayerColor(Player player){
 		return plugin.data.getString(player.getUniqueId() + ".color");
 	}
+
 	/**
 	 * Set a player's color.
-	 * @param player
-	 * @param color
+	 * @param player The player color to set
+	 * @param color The color to set
+	 *              <p>Keep in mind that this color is interpreted from the chatcolor.yml file, not the default colors.</p>
 	 */
 	public void setPlayerColor(Player player, String color){
 		plugin.data.set(player.getUniqueId() + ".color", color);
 		plugin.saveFile();
 	}
+
 	/**
 	 * Get the swear word list.
 	 * @return Block swear words.
 	 */
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> getSwearWords(){
-		return (ArrayList<String>) plugin.getConfig().get("Blocked_Words");
+	public List<String> getSwearWords(){
+		return plugin.getConfig().getStringList("Blocked_Words");
 	}
+
 	/**
 	 * Set the swear word list.
-	 * @param words
+	 * @param words The words to add
 	 */
-	public void setSwearWords(ArrayList<String> words){
+	public void setSwearWords(List<String> words){
 		plugin.getConfig().set("Blocked_Words", words);
 		plugin.saveConfig();
-	}
-	
-	/**
-	 * If components are enabled.
-	 * @return If components are enabled.
-	 */
-	public boolean isComponents() {
-		return plugin.getConfig().getBoolean("Components_Enabled");
 	}
 	
 	/**
 	 * Get the current formatting type.
 	 * @return The value of the config.
 	 */
-	public String getFormattingType(){
-		return plugin.getConfig().getString("chat_format");
+	public ChatType getFormattingType(){
+		return plugin.chatType;
 	}
-	
+
 	/**
-	 * See if default channel exists.
-	 * @param chan - The channel in the config.
-	 * @return True if it does, false if not.
+	 * Get the chat color utility interface.
+	 * <p>Note: Most methods from this interface are wrapped in the {@link me.ryandw11.ultrachat.util.ChatUtil} class.</p>
+	 * @return The chat color utility interface.
 	 */
-	public boolean legitDefaultChannel(String chan){
-		if(plugin.channel.contains(chan))
-			return true;
-		return false;
+	public ChatColorUtils getChatColorUtil(){
+		return plugin.chatColorUtil;
 	}
+
+	/**
+	 * Get the chat color manager.
+	 * <p>Note: Most uses for this class is covered by the {@link me.ryandw11.ultrachat.util.ChatUtil} class.</p>
+	 * <p><b>This class is only available on 1.16+ servers. This WILL return null on any version below 1.16.</b></p>
+	 * @return The chat color manager.
+	 */
+	public ChatColorManager getChatColorManager(){
+		return plugin.chatColorManager;
+	}
+
+	public ChannelManager getChannelManager(){
+		return new ChannelManager();
+	}
+
 	/**
 	 * Get the current active hooks.
-	 * @return The set witht the names of the plugins. Returns null if no hooks are active.
+	 * @return The set with the names of the plugins. Returns null if no hooks are active.
 	 */
 	public Set<String> getActiveHooks(){
-		Set<String> s = new HashSet<String>();
+		Set<String> s = new HashSet<>();
 		if(Bukkit.getServer().getPluginManager().getPlugin("AdvancedBan") != null && plugin.getConfig().getBoolean("pluginhooks.Essentials")){
 			s.add("Essentials");
 		}

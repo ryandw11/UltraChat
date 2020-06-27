@@ -33,4 +33,5 @@ sjoin-hide: '&bYour Join/Leave message will no longer be shown!'
 sjoin-other-show: '&b%p Join/Leave message will now be shown!'
 sjoin-other-hide: '&b%p Join/Leave message will no longer be shown!'
 help-page-error: '&cThere are only two help pages!'
+chat-color-change: 'Your chat color has been changed!'
 

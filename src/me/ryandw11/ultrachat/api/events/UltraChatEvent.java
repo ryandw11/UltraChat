@@ -9,6 +9,10 @@ import org.bukkit.event.HandlerList;
 import me.ryandw11.ultrachat.api.ChatType;
 import me.ryandw11.ultrachat.api.events.properties.ChatProperties;
 
+/**
+ * The UltraChatEvent is used when a player chats. This event gives you more information than the normal AsyncChatEvent.
+ * <p>Note: Since API Version 2.5 this event is only needed when you want specific ultraChat information.</p>
+ */
 public class UltraChatEvent extends Event{
 
 	private static final HandlerList handlers = new HandlerList();
@@ -36,7 +40,7 @@ public class UltraChatEvent extends Event{
 	 }
 	 /**
 	  * Set the recipients.
-	  * @param recipents The set of recipients.
+	  * @param recipients The set of recipients.
 	  */
 	 public void setRecipients(Set<Player> recipients){
 		 this.recipients = recipients;

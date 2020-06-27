@@ -1,0 +1,94 @@
+###############################################
+#                Chat Color                   #
+###############################################
+chat_colors:
+  '&0': 'default'
+  '&1': 'default'
+  '&2': 'default'
+  '&3': 'default'
+  '&4': 'default'
+  '&5': 'default'
+  '&6': 'default'
+  '&7': 'default'
+  '&8': 'default'
+  '&9': 'default'
+  '&a': 'default'
+  '&b': 'default'
+  '&c': 'default'
+  '&d': 'default'
+  '&e': 'default'
+  '&f': 'default'
+  '&g': '{#11f014}'
+
+###############################################
+#               Chat Color GUI                #
+###############################################
+color_gui:
+  'Dark Blue':
+    color: '&1'
+    item: 'BLUE_WOOL'
+    permission: 'ultrachat.chatcolor.darkblue'
+  'Green':
+    color: '&2'
+    item: 'GREEN_WOOL'
+    permission: 'ultrachat.chatcolor.green'
+  'Cyan':
+    color: '&3'
+    item: 'CYAN_WOOL'
+    permission: 'ultrachat.chatcolor.cyan'
+  'Red':
+    color: '&4'
+    item: 'RED_WOOL'
+    permission: 'ultrachat.chatcolor.red'
+  'Purple':
+    color: '&5'
+    item: 'PURPLE_WOOL'
+    permission: 'ultrachat.chatcolor.purple'
+  'Orange':
+    color: '&6'
+    item: 'ORANGE_WOOL'
+    permission: 'ultrachat.chatcolor.orange'
+  'Light Gray':
+    color: '&7'
+    item: 'LIGHT_GRAY_WOOL'
+    permission: 'ultrachat.chatcolor.lightgray'
+  'Gray':
+    color: '&8'
+    item: 'GRAY_WOOL'
+    permission: 'ultrachat.chatcolor.gray'
+  'Blue':
+    color: '&9'
+    item: 'LAPIS_BLOCK'
+    permission: 'ultrachat.chatcolor.blue'
+  'Lime':
+    color: '&a'
+    item: 'LIME_WOOL'
+    permission: 'ultrachat.chatcolor.lime'
+  'Light Blue':
+    color: '&b'
+    item: 'BLUE_WOOL'
+    permission: 'ultrachat.chatcolor.lightblue'
+  'Pink':
+    color: '&c'
+    item: 'PINK_WOOL'
+    permission: 'ultrachat.chatcolor.pink'
+  'Magenta':
+    color: '&d'
+    item: 'MAGENTA_WOOL'
+    permission: 'ultrachat.chatcolor.magenta'
+  'Yellow':
+    color: '&e'
+    item: 'YELLOW_WOOL'
+    permission: 'ultrachat.chatcolor.yellow'
+  'White':
+    color: '&f'
+    item: 'WHITE_WOOL'
+    permission: 'ultrachat.chatcolor.white'
+  'Black':
+    color: '&0'
+    item: 'BLACK_WOOL'
+    permission: 'ultrachat.chatcolor.black'
+  'Pumpkin Orange':
+    color: '{#f59b14}'
+    item: 'BLACK_WOOL'
+    permission: 'ultrachat.chatcolor.pumpkinorange'

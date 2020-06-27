@@ -4,7 +4,7 @@ import me.ryandw11.ultrachat.api.channels.ChannelBuilder;
 import me.ryandw11.ultrachat.api.channels.ChatChannel;
 
 public class ChannelProperties implements ChatProperties {
-	
+
 	private boolean json;
 	private String channel;
 	

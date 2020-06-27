@@ -5,6 +5,11 @@ me.ryandw11.ultrachat.api.events
 me.ryandw11.ultrachat.api.events.properties
 me.ryandw11.ultrachat.api.managers
 me.ryandw11.ultrachat.api.placeholders
+me.ryandw11.ultrachat.chatcolor
 me.ryandw11.ultrachat.commands
 me.ryandw11.ultrachat.formatting
+me.ryandw11.ultrachat.gui
+me.ryandw11.ultrachat.listner
+me.ryandw11.ultrachat.pluginhooks
+me.ryandw11.ultrachat.util
 me.ryandw11.ultrachat.util.papi

@@ -1,16 +1,19 @@
 package me.ryandw11.ultrachat.gui;
 
+import com.sun.istack.internal.NotNull;
+import me.ryandw11.ultrachat.util.ChatUtil;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -18,156 +21,138 @@ import org.bukkit.inventory.meta.ItemMeta;
 import me.ryandw11.ultrachat.UltraChat;
 import me.ryandw11.ultrachat.api.Lang;
 
+import java.util.*;
+
 /**
  * ColorGUI class.
- * Updated for 1.14+
+ * Updated for 1.16+
  * @author Ryandw11
  *
  */
 public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
 	
 	private UltraChat plugin;
+	private List<String> colors;
 	public ColorGUI_Latest(){
 		plugin = UltraChat.plugin;
+		colors = new ArrayList<>(Objects.requireNonNull(plugin.chatColorFC.getConfigurationSection("color_gui")).getKeys(false));
 	}
-	public void openGUI(Player p){
-		Inventory i = Bukkit.createInventory(null, InventoryType.CHEST, Lang.COLOR_GUI.toString());
-		
-		ItemStack darkblueitem = new ItemStack(Material.BLUE_WOOL);
-		ItemMeta darkbluemeta = darkblueitem.getItemMeta();
-		
-		ItemStack greenitem = new ItemStack(Material.GREEN_WOOL);
-		ItemMeta greenmeta = greenitem.getItemMeta();
-		
-		ItemStack lightblueitem = new ItemStack(Material.CYAN_WOOL);
-		ItemMeta lightbluemeta = lightblueitem.getItemMeta();
-		
-		ItemStack reditem = new ItemStack(Material.RED_WOOL);
-		ItemMeta redmeta = reditem.getItemMeta();
-		
-		ItemStack purpleitem = new ItemStack(Material.PURPLE_WOOL);
-		ItemMeta purplemeta = purpleitem.getItemMeta();
-		
-		ItemStack golditem = new ItemStack(Material.ORANGE_WOOL);
-		ItemMeta goldmeta = golditem.getItemMeta();
-		
-		ItemStack lightgrayitem = new ItemStack(Material.LIGHT_GRAY_WOOL);
-		ItemMeta lightgraymeta = lightgrayitem.getItemMeta();
-		
-		ItemStack grayitem = new ItemStack(Material.GRAY_WOOL);
-		ItemMeta graymeta = grayitem.getItemMeta();
-		
-		ItemStack blueitem = new ItemStack(Material.LAPIS_BLOCK);
-		ItemMeta bluemeta = blueitem.getItemMeta();
-		
-		ItemStack lightgreenitem = new ItemStack(Material.LIME_WOOL);
-		ItemMeta lightgreenmeta = lightgreenitem.getItemMeta();
-		
-		ItemStack aquaitem = new ItemStack(Material.LIGHT_BLUE_WOOL);
-		ItemMeta aquameta = aquaitem.getItemMeta();
-		
-		ItemStack lightreditem = new ItemStack(Material.PINK_WOOL);
-		ItemMeta lightredmeta = lightreditem.getItemMeta();
-		
-		ItemStack pinkitem = new ItemStack(Material.MAGENTA_WOOL);
-		ItemMeta pinkmeta = pinkitem.getItemMeta();
-		
-		ItemStack yellowitem = new ItemStack(Material.YELLOW_WOOL);
-		ItemMeta yellowmeta = yellowitem.getItemMeta();
-		
-		ItemStack whiteitem = new ItemStack(Material.WHITE_WOOL);
-		ItemMeta whitemeta = whiteitem.getItemMeta();
-		
-		//==========================================================
 
-		darkbluemeta.setDisplayName("§1Dark Blue Color Chat");
-		darkblueitem.setItemMeta(darkbluemeta);
-		
-		greenmeta.setDisplayName("§2Green Color Chat");
-		greenitem.setItemMeta(greenmeta);
-		
-		lightbluemeta.setDisplayName("§3Cyan Color Chat");
-		lightblueitem.setItemMeta(lightbluemeta);
-		
-		redmeta.setDisplayName("§4Red Color Chat");
-		reditem.setItemMeta(redmeta);
-		
-		purplemeta.setDisplayName("§5Purple Color Chat");
-		purpleitem.setItemMeta(purplemeta);
-		
-		goldmeta.setDisplayName("§6Gold Color Chat");
-		golditem.setItemMeta(goldmeta);
-		
-		lightgraymeta.setDisplayName("§7Light Gray Color Chat");
-		lightgrayitem.setItemMeta(lightgraymeta);
-		
-		graymeta.setDisplayName("§8Gray Color Chat");
-		grayitem.setItemMeta(graymeta);
-		
-		bluemeta.setDisplayName("§9Blue Color Chat");
-		blueitem.setItemMeta(bluemeta);
-		
-		lightgreenmeta.setDisplayName("§aLight Green Color Chat");
-		lightgreenitem.setItemMeta(lightgreenmeta);
-		
-		aquameta.setDisplayName("§bAqua Color Chat");
-		aquaitem.setItemMeta(aquameta);
-		
-		lightredmeta.setDisplayName("§cLight Red Color Chat");
-		lightreditem.setItemMeta(lightredmeta);
-		
-		pinkmeta.setDisplayName("§dMagenta Color Chat");
-		pinkitem.setItemMeta(pinkmeta);
-		
-		yellowmeta.setDisplayName("§eYellow Color Chat");
-		yellowitem.setItemMeta(yellowmeta);
-		
-		whitemeta.setDisplayName("§fWhite Color Chat");
-		whiteitem.setItemMeta(whitemeta);
-		//==========================================================
-		
-		ItemStack holder = new ItemStack(Material.GRAY_STAINED_GLASS_PANE, 1);
-		ItemMeta holderM = holder.getItemMeta();
-		holderM.setDisplayName(" ");
-		holder.setItemMeta(holderM);
-		
-		for(int o = 15; o < 27; o++) {
-			i.setItem(o, holder);
+
+	public void openGUI(Player p, int page){
+		Inventory inv = Bukkit.createInventory(null, 9*3, Lang.COLOR_GUI.toString());
+
+		int i = getMin(page);
+		int invSlot = 0;
+		while(i < colors.size() && i < getMax(page)){
+			ConfigurationSection section = plugin.chatColorFC.getConfigurationSection("color_gui." + colors.get(i));
+			assert section != null;
+			if(p.hasPermission(Objects.requireNonNull(section.getString("permission")))){
+				ItemStack item = new ItemStack(Objects.requireNonNull(Material.getMaterial(Objects.requireNonNull(section.getString("item")))));
+				ItemMeta meta = item.getItemMeta();
+				assert meta != null;
+				meta.setDisplayName(ChatUtil.translateColorCode(section.getString("color")) + section.getName());
+				meta.setLore(Collections.singletonList(ChatColor.AQUA + "Click this to set your chat color!"));
+				item.setItemMeta(meta);
+				inv.setItem(invSlot, item);
+			}else{
+				inv.setItem(invSlot, getNoPermItem());
+			}
+
+			invSlot++;
+			i++;
 		}
-
-		
-		i.setItem(0, darkblueitem);
-		i.setItem(1, greenitem);
-		i.setItem(2, lightblueitem);
-		i.setItem(3, reditem);
-		i.setItem(4, purpleitem);
-		i.setItem(5, golditem);
-		i.setItem(6, lightgrayitem);
-		i.setItem(7, grayitem);
-		i.setItem(8, blueitem);
-		i.setItem(9, lightgreenitem);
-		i.setItem(10, aquaitem);
-		i.setItem(11, lightreditem);
-		i.setItem(12, pinkitem);
-		i.setItem(13, yellowitem);
-		i.setItem(14, whiteitem);
-
-		
-		p.openInventory(i);
+		setBottom(inv, page);
+		p.openInventory(inv);
 	}
+
+	private int getMax(int page){
+		return 9 * (2 * page);
+	}
+	private int getMin(int page){
+		return (9 * (page*2)) - (9*2);
+	}
+
+	private ItemStack getNoPermItem(){
+		ItemStack itemStack = new ItemStack(Material.LIGHT_GRAY_STAINED_GLASS_PANE);
+		ItemMeta meta = itemStack.getItemMeta();
+		assert meta != null;
+		meta.setDisplayName(ChatColor.RED + "You do not have permission for this color!");
+		itemStack.setItemMeta(meta);
+		return itemStack;
+	}
+
+	private ItemStack getBottomStack(){
+		ItemStack bottomStack = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+		ItemMeta bottomMeta = bottomStack.getItemMeta();
+		assert bottomMeta != null;
+		bottomMeta.setDisplayName(ChatColor.GRAY + " ");
+		bottomStack.setItemMeta(bottomMeta);
+		return bottomStack;
+	}
+
+	private ItemStack getPrevStack(int page){
+		ItemStack prevPage = new ItemStack(Material.PURPLE_STAINED_GLASS_PANE);
+		ItemMeta prevMeta = prevPage.getItemMeta();
+		assert prevMeta != null;
+		prevMeta.setDisplayName(ChatColor.LIGHT_PURPLE + "<< Previous Page");
+		prevPage.setItemMeta(prevMeta);
+		if(page > 1)
+			prevPage.setAmount(page-1);
+		return prevPage;
+	}
+
+	private ItemStack getCurrentStack(int page){
+		ItemStack currentPage = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+		ItemMeta currentMeta = currentPage.getItemMeta();
+		assert currentMeta != null;
+		currentMeta.setDisplayName(ChatColor.GRAY + "Current Page: " + page);
+		currentPage.setItemMeta(currentMeta);
+		currentPage.setAmount(page);
+		return currentPage;
+	}
+
+	private ItemStack getNextStack(int page){
+		ItemStack nextPage = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+		ItemMeta nextMeta = nextPage.getItemMeta();
+		assert nextMeta != null;
+		nextMeta.setDisplayName(ChatColor.RED + "Next Page >>");
+		nextPage.setItemMeta(nextMeta);
+		nextPage.setAmount(page+1);
+		return nextPage;
+	}
+
+	private void setBottom(Inventory inventory, int page){
+		ItemStack bottomStack = getBottomStack();
+		ItemStack prevPage = getPrevStack(page);
+		ItemStack currentPage = getCurrentStack(page);
+		ItemStack nextPage = getNextStack(page);
+		for(int i = 18; i < 27; i++){
+			if(i == 21 && page > 1){
+				inventory.setItem(i, prevPage);
+			}else if(i == 22){
+				inventory.setItem(i, currentPage);
+			}else if(i == 23 && colors.size() > getMax(page)){
+				inventory.setItem(i, nextPage);
+			}else{
+				inventory.setItem(i, bottomStack);
+			}
+		}
+	}
+
 	/*
 	 * Command
 	 */
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
 		if(!(sender instanceof Player)){
 			plugin.getLogger().info("This command is for players only!");
 			return true;
 		}
 		Player p = (Player) sender;
 		if(p.hasPermission("ultrachat.color")){
-			openGUI(p.getPlayer());
+			openGUI(p.getPlayer(), 1);
 		}
 		else{
 			p.sendMessage(Lang.NO_PERM.toString());
@@ -194,177 +179,35 @@ public class ColorGUI_Latest implements CommandExecutor, Listener, ColorGUI{
 		if(e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR || !e.getCurrentItem().hasItemMeta()){
 			return;
 		}
-		//================
+
+		int page = Objects.requireNonNull(e.getInventory().getItem(22)).getAmount();
+
 		ItemStack item = e.getCurrentItem();
-		
 		if(!e.getInventory().contains(item)) return;
-		
-		switch(item.getType()) {
-		case LAPIS_BLOCK:
-			if(p.hasPermission("ultrachat.color.blue")){
-				 p.sendMessage(ChatColor.BLUE + "You choose blue color chat!");
-		            p.closeInventory();
-		            plugin.data.set(p.getUniqueId() + ".color", "&9");
-		            plugin.saveFile();
-				}
-				else{
-					p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-				}
-			break;
-        case WHITE_WOOL:
-            p.sendMessage(ChatColor.WHITE + "You choose white color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&f");
-            plugin.saveFile();
-            break;
-        case ORANGE_WOOL:
-        	if(p.hasPermission("ultrachat.color.gold")){
-        		p.sendMessage(ChatColor.GOLD + "You choose gold color chat!");
-            	p.closeInventory();
-            	plugin.data.set(p.getUniqueId() + ".color", "&6");
-            	plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            	break;
 
-        case MAGENTA_WOOL:
-        	if(p.hasPermission("ultrachat.color.magenta")){
-            p.sendMessage(ChatColor.LIGHT_PURPLE + "You choose magenta color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&d");
-            plugin.saveFile();
-        	}
-        	else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-            
-        	
+		if(item.equals(getBottomStack()) || item.equals(getCurrentStack(page)) || item.equals(getNoPermItem())) return;
+		if(item.equals(getNextStack(page))){
+			p.closeInventory();
+			openGUI(p, page+1);
+		}else if(item.equals(getPrevStack(page))){
+			p.closeInventory();
+			openGUI(p, page-1);
+		}else{
+			ConfigurationSection section = plugin.chatColorFC.getConfigurationSection("color_gui."
+					+ ChatColor.stripColor(Objects.requireNonNull(item.getItemMeta()).getDisplayName()));
 
-        case LIGHT_BLUE_WOOL:
-        	if(p.hasPermission("ultrachat.color.aqua")){
-            p.sendMessage(ChatColor.AQUA + "You choose Aqua color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&b");
-            plugin.saveFile();
-        	}
-            else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        	
-        	
-        	
-        case YELLOW_WOOL:
-        	if(p.hasPermission("ultrachat.color.yellow")){
-            p.sendMessage(ChatColor.YELLOW + "You choose yellow color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&e");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        	
-        case LIME_WOOL:
-        	if(p.hasPermission("ultrachat.color.lightgreen")){
-            p.sendMessage(ChatColor.GREEN + "You choose light green color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&a");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case PINK_WOOL:
-        	if(p.hasPermission("ultrachat.color.lightred")){
-            p.sendMessage(ChatColor.RED + "You choose light red color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&c");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case GRAY_WOOL:
-        	if(p.hasPermission("ultrachat.color.gray")){
-            p.sendMessage(ChatColor.DARK_GRAY + "You choose gray color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&8");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case LIGHT_GRAY_WOOL:
-        	if(p.hasPermission("ultrachat.color.lightgray")){
-            p.sendMessage(ChatColor.GRAY + "You choose light gray color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&7");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case CYAN_WOOL:
-        	if(p.hasPermission("ultrachat.color.cyan")){
-            p.sendMessage(ChatColor.DARK_AQUA + "You choose cyan color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&3");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case PURPLE_WOOL:
-        	if(p.hasPermission("ultrachat.color.purple")){
-            p.sendMessage(ChatColor.DARK_PURPLE + "You choose purple color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&5");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case BLUE_WOOL:
-        	if(p.hasPermission("ultrachat.color.darkblue")){
-            p.sendMessage(ChatColor.DARK_BLUE + "You choose dark blue color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&1");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case GREEN_WOOL:
-        	if(p.hasPermission("ultrachat.color.green")){
-            p.sendMessage(ChatColor.DARK_GREEN + "You choose green color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&2");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case RED_WOOL:
-        	if(p.hasPermission("ultrachat.color.red")){
-            p.sendMessage(ChatColor.DARK_RED + "You choose red color chat!");
-            p.closeInventory();
-            plugin.data.set(p.getUniqueId() + ".color", "&4");
-            plugin.saveFile();
-        	}else{
-        		p.sendMessage(ChatColor.RED + "You do not have permission for this color!");
-        	}
-            break;
-        case GRAY_STAINED_GLASS_PANE:
-        	break;
-		default:
-			 p.sendMessage(ChatColor.WHITE + "You choose white color chat!");
-	         p.closeInventory();
-	         plugin.data.set(p.getUniqueId() + ".color", "&f");
-	         plugin.saveFile();
-			break;
+			assert section != null;
+			if(!p.hasPermission(Objects.requireNonNull(section.getString("permission")))){
+				p.sendMessage(ChatColor.RED + "You do not have permission to use this chat color!");
+				return;
+			}
+
+			plugin.data.set(p.getUniqueId() + ".color", section.getString("color"));
+			plugin.saveFile();
+
+			p.spigot().sendMessage(TextComponent.fromLegacyText(plugin.chatColorUtil.translateChatColor(section.getString("color") + Lang.CHAT_COLOR_CHANGE)));
+
+			p.closeInventory();
 		}
 		
 	}
