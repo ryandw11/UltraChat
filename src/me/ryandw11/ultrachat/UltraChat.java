@@ -183,10 +183,10 @@ public class UltraChat extends JavaPlugin {
             version = " ";
         }
         if (version.equals("v1_14_R1") || version.equals("v1_15_R1")) {
-
+            plugin.getLogger().info("Server version is 1.14 or 1.15, enabling comparability mode.");
             Bukkit.getServer().getPluginManager().registerEvents(new Notify(), this);
             colorGUI = new ColorGUI_1_15_R1();
-            Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_Latest(), this);
+            Bukkit.getServer().getPluginManager().registerEvents(new ColorGUI_1_15_R1(), this);
             if (!(plugin.getConfig().getBoolean("ChatColor_Command")))
                 Objects.requireNonNull(getCommand("color")).setExecutor(new ColorGUI_1_15_R1());
 
