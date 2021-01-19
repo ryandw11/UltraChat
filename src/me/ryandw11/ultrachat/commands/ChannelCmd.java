@@ -78,7 +78,6 @@ public class ChannelCmd implements CommandExecutor {
 				p.sendMessage(Lang.CHANNEL_CHANGE.toString().replace("%s", args[0]));
 			}
 			else{
-				p.sendMessage(Lang.NO_PERM_JOIN.toString());
 				p.sendMessage(Lang.NO_PERM_CHANNEL.toString());
 			}
 		}

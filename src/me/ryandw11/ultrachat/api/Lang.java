@@ -42,7 +42,6 @@ public enum Lang {
 	HELP_PAGE_ERROR("help-page-error", "&cThere are only two help pages!"),
 	CHAT_COLOR_CHANGE("chat-color-change", "Your chat color has been changed!"),
 	NO_PERM_CHANNEL("no-perm-channel", "&cYou do not have permission for this command."),
-	NO_PERM_JOIN("no-perm-join", "You do not have permission to join that channel." ),
 	CHANNEL_NULL("channel-null", "That channel does not exist!"),
 	ERROR_CHANNEL_IN("error-channel-in", "&cError: you are currently in the channel"),
 	CHANNEL_CHANGE("channel-change", "You are now in the channel %s !");

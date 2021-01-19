@@ -35,7 +35,6 @@ sjoin-other-hide: '&b%p Join/Leave message will no longer be shown!'
 help-page-error: '&cThere are only two help pages!'
 chat-color-change: 'Your chat color has been changed!'
 no-perm-channel: '&cYou do not have permission for this command.'
-no-perm-join: "You do not have permission to join that channel."
 channel-null: "That channel does not exist!"
 error-channel-in: "Error: you are currently in the channel"
 channel-change: "You are now in the channel %s !"
