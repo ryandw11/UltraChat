@@ -40,9 +40,13 @@ public enum Lang {
 	SJOIN_OTHER_SHOW("sjoin-other-show", "&b%p Join/Leave message will now be shown!"),
 	SJOIN_OTHER_HIDE("sjoin-other-hide", "&b%p Join/Leave message will no longer be shown!"),
 	HELP_PAGE_ERROR("help-page-error", "&cThere are only two help pages!"),
-	CHAT_COLOR_CHANGE("chat-color-change", "Your chat color has been changed!");
+	CHAT_COLOR_CHANGE("chat-color-change", "Your chat color has been changed!"),
+	NO_PERM_CHANNEL("no-perm-channel", "&cYou do not have permission for this command."),
+	CHANNEL_NULL("channel-null", "That channel does not exist!"),
+	ERROR_CHANNEL_IN("error-channel-in", "&cError: you are currently in the channel"),
+	CHANNEL_CHANGE("channel-change", "You are now in the channel %s !");
 
-	
+
 	 private String path;
 	 private String def;
 	 private static YamlConfiguration LANG;

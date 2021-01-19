@@ -26,7 +26,7 @@ public class ChannelCmd implements CommandExecutor {
 		plugin = UltraChat.plugin;
 	}
 	@Override
-	public boolean onCommand(CommandSender sender, Command cmd, String s, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String s, @NotNull String[] args) {
 
 
 		Player p = (Player) sender;
@@ -66,19 +66,19 @@ public class ChannelCmd implements CommandExecutor {
 		}
 		else{
 			if(!plugin.channel.contains(args[0])){
-				p.sendMessage(ChatColor.RED + "That channel does not exsist!");
+				p.sendMessage(Lang.CHANNEL_NULL.toString());
 				return true;
 			}
 			if(plugin.data.getString(p.getUniqueId() + ".channel").equalsIgnoreCase(args[0])){
-				p.sendMessage(ChatColor.RED + "Error: you are currently in the channel");
+				p.sendMessage(Lang.ERROR_CHANNEL_IN.toString());
 			}
 			else if(p.hasPermission(plugin.channel.getString(args[0] + ".permission")) || plugin.channel.getString(args[0] + ".permission").equalsIgnoreCase("none")){
 				plugin.data.set(p.getUniqueId() + ".channel", args[0]);
 				plugin.saveFile();
-				p.sendMessage(ChatColor.BLUE + "You are now in the channel " + args[0] + "!");
+				p.sendMessage(Lang.CHANNEL_CHANGE.toString().replace("%s", args[0]));
 			}
 			else{
-				p.sendMessage(ChatColor.RED + "You do not have permission to join that channel.");
+				p.sendMessage(Lang.NO_PERM_CHANNEL.toString());
 			}
 		}
 		return false;
