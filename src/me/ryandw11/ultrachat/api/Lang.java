@@ -48,7 +48,7 @@ public enum Lang {
 	CHANNEL_CHANGE("channel-change", "You are now in the channel %s !");
 
 
-	private String path;
+	 private String path;
 	 private String def;
 	 private static YamlConfiguration LANG;
 	 
