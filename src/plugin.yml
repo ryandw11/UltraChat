@@ -21,7 +21,7 @@ commands:
       aliases: [spycmd, cmds, uspy, ucspy]
     color:
       description: Change your chat color.
-      aliases: [ccolor, chatcolor, uchatcolor, uccolor, chat color]
+      aliases: [ccolor, chatcolor, uchatcolor, uccolor, chat color, colour, ccolour, chatcolour, uchatcolour, uccolour, chat colour]
     channel:
       description: Change the channel you are using or display the help.
       aliases: [chan, cn, ch, channels]
