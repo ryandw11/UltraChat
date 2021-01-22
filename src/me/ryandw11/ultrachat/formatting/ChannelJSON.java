@@ -50,12 +50,7 @@ public class ChannelJSON implements Listener {
 			for(Player pl : uce.getRecipients()){
 				if(plugin.data.getString(pl.getUniqueId() + ".channel").equals(channel)){
 					if(pl.hasPermission(Objects.requireNonNull(plugin.channel.getString(channel + ".permission"))) || Objects.requireNonNull(plugin.channel.getString(channel + ".permission")).equalsIgnoreCase("none")){
-						String format = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.channel.getString(channel + ".prefix")))
-								+ ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.channel.getString(channel + ".format")))
-								.replace("%prefix%", pf.getPrefix())
-								.replace("%suffix%", pf.getSuffix())
-								.replace("%player%", p.getDisplayName())
-								+ pf.getColor();
+						String format = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes(Objects.requireNonNull(plugin.channel.getString(channel + ".format"))), p);
 
 						ComponentBuilder cb = new ComponentBuilder("");
 						cb.append(JComponentManager.formatComponents(format, p));
@@ -71,12 +66,7 @@ public class ChannelJSON implements Listener {
 			e.getRecipients().clear();
 			if(!uce.isCancelled())
 				for(Player pl : uce.getRecipients()){
-					String formats = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.channel.getString(channel + ".prefix")))
-							+ ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(plugin.channel.getString(channel + ".format")))
-							.replace("%prefix%", pf.getPrefix())
-							.replace("%suffix%", pf.getSuffix())
-							.replace("%player%", p.getDisplayName())
-							+ pf.getColor();
+					String formats = plugin.papi.translatePlaceholders(ChatUtil.translateColorCodes(Objects.requireNonNull(plugin.channel.getString(channel + ".format"))), p);
 
 					ComponentBuilder cb = new ComponentBuilder("");
 					cb.append(JComponentManager.formatComponents(formats, p));
