@@ -29,6 +29,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.event.Listener;
 
 import java.io.File;
 import java.io.IOException;
@@ -46,7 +47,7 @@ import java.util.UUID;
  * @author Ryandw11
  * @version 2.5
  */
-public class UltraChat extends JavaPlugin {
+public class UltraChat extends JavaPlugin implements Listener {
 
     public static UltraChat plugin;
     public static YamlConfiguration LANG;
@@ -81,11 +82,13 @@ public class UltraChat extends JavaPlugin {
             return;
         }
 
-        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            Bukkit.getPluginManager().registerEvents(this, this);
             getLogger().info("Hooked into PlaceholderAPI! You can use the place holders!");
             papi = new PAPIEnabled();
         } else {
             papi = new PAPIDisabled();
+            throw new RuntimeException("Could not find Placeholder API! Plugin can not work without it!");
         }
         getLogger().info(String.format("UltraChat is enabled and running fine! V: %s", getDescription().getVersion()));
         if (getServer().getPluginManager().getPlugin("AdvancedBan") != null && getConfig().getBoolean("pluginhooks.AdvancedBan")) {
