@@ -1,0 +1,8 @@
+name: UltraChat
+version: 3.0.0
+main: me.ryandw11.ultrachat
+author: Ryandw11
+description: An advanced chat management plugin.
+depend: [Vault]
+softdepend: [PlaceholderAPI]
+api-version: 1.13
